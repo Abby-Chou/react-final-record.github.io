@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/react-final-record.github.io/dist/index.html/static/css/main.fc940c6e.css",
+    "main.js": "/react-final-record.github.io/dist/index.html/static/js/main.e1569daa.js",
+    "static/js/453.68d63b2b.chunk.js": "/react-final-record.github.io/dist/index.html/static/js/453.68d63b2b.chunk.js",
+    "static/media/bootstrap-icons.woff?": "/react-final-record.github.io/dist/index.html/static/media/bootstrap-icons.39795c0b4513de014cf8.woff",
+    "static/media/bootstrap-icons.woff2?": "/react-final-record.github.io/dist/index.html/static/media/bootstrap-icons.b7bcc075b395c14ce8c2.woff2",
+    "static/media/doughnut.png": "/react-final-record.github.io/dist/index.html/static/media/doughnut.f827fdc6ee7357c5df26.png",
+    "static/media/dessert.png": "/react-final-record.github.io/dist/index.html/static/media/dessert.e7c056cd13510a5b8669.png",
+    "static/media/cake.png": "/react-final-record.github.io/dist/index.html/static/media/cake.569022412a038bfe18c8.png",
+    "static/media/apple-pie.png": "/react-final-record.github.io/dist/index.html/static/media/apple-pie.942b242138cde638c7c9.png",
+    "index.html": "/react-final-record.github.io/dist/index.html/index.html",
+    "main.fc940c6e.css.map": "/react-final-record.github.io/dist/index.html/static/css/main.fc940c6e.css.map",
+    "main.e1569daa.js.map": "/react-final-record.github.io/dist/index.html/static/js/main.e1569daa.js.map",
+    "453.68d63b2b.chunk.js.map": "/react-final-record.github.io/dist/index.html/static/js/453.68d63b2b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fc940c6e.css",
+    "static/js/main.e1569daa.js"
+  ]
+}
