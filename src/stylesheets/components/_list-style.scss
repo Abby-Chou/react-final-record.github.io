@@ -1,0 +1,29 @@
+.product-list-item {
+  transition: background-color 0.3s ease;
+  border: none;
+}
+
+.product-list-item:hover {
+  background-color: #fff4ee; /* 淡橘粉背景 */
+}
+
+.product-list-item a {
+  transition: all 0.3s ease;
+}
+
+.product-list-item:hover a {
+  color: #bb6b4c !important; /* 主色調：溫暖棕橘 */
+  font-weight: 600;
+}
+
+.product-list-item:hover img {
+  transform: scale(1.2);
+  transition: transform 0.3s ease;
+}
+
+.product-list-item.active,
+.product-list-item.active a {
+  background-color: #ffe3d6;
+  color: #bb6b4c !important;
+  font-weight: bold;
+}

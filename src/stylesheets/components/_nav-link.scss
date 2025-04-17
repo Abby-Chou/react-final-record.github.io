@@ -1,0 +1,29 @@
+.navbar-toggler {
+  color: transparent !important;
+}
+
+.navbar-actions {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1050;
+}
+
+.nav-link-special {
+  text-align: center;
+}
+
+// lg套用以下
+@media (min-width: 992px) {
+  .navbar-actions {
+    position: static;
+  }
+  .nav-link-special {
+    position: relative;
+  }
+
+  .nav-link-special.active {
+    font-weight: 600;
+    border-bottom: 3px solid rgba(191, 136, 106, 1);
+  }
+}

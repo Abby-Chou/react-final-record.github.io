@@ -1,0 +1,12 @@
+.order-check {
+  border-top: 1px solid #333;
+  width: 100px;
+  margin-top: 15px;
+}
+
+@media (min-width: 992px) {
+  .order-check {
+    width: 200px;
+    margin-top: 20px;
+  }
+}

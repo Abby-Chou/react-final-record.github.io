@@ -1,0 +1,42 @@
+.dot-wave-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3); // 半透明黑底
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff; // 亮色文字比較清楚
+}
+
+.dot-wave-loader .dot {
+  animation: wave 1.2s infinite;
+  margin-left: 5px;
+  display: inline-block;
+}
+
+.dot-wave-loader .dot:nth-of-type(1) {
+  animation-delay: 0s;
+}
+.dot-wave-loader .dot:nth-of-type(2) {
+  animation-delay: 0.2s;
+}
+.dot-wave-loader .dot:nth-of-type(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes wave {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}

@@ -1,0 +1,50 @@
+.swiper-button-prev,
+.swiper-button-next {
+  color: rgb(79, 84, 88) !important; /* 改變箭頭顏色 */
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+  color: #d1d6dd !important; /* 滑過變色 */
+}
+
+.commets-swiper {
+  height: 120px;
+}
+
+.product-swiper {
+  max-width: 300px;
+  overflow: hidden;
+  height: 400px;
+}
+
+.img-fixed-height {
+  height: 200px;
+  object-fit: cover;
+  width: 100%;
+}
+
+// 適用 md
+@media (min-width: 768px) {
+  .commets-swiper {
+    height: 240px;
+  }
+  .product-swiper {
+    max-width: 600px;
+  }
+}
+
+// 適用 lg
+@media (min-width: 992px) {
+  .product-swiper {
+    max-width: 800px;
+  }
+  .img-fixed-height {
+    height: 250px;
+    object-fit: cover;
+    width: 100%;
+  }
+  .commets-swiper {
+    height: 360px;
+  }
+}

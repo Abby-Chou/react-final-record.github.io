@@ -1,70 +1,41 @@
-# Getting Started with Create React App
+# 派派工房 電商平台
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+一個以 React 製作的甜點電商平台，提供使用者完整的購物體驗，包含商品瀏覽、購物車管理、優惠碼折扣、結帳流程等；同時也提供後台介面供管理員操作商品、折價券與訂單。
 
-## Available Scripts
+# 🚀 功能介紹
 
-In the project directory, you can run:
+## 前台使用者
 
-### `npm start`
+- 商品列表分類（蛋糕、派、鹹派）
+- 商品詳情與加入購物車
+- 優惠碼折扣功能
+- 結帳流程與付款模擬
+- 訂單查詢頁面
+- AOS、Swiper 等動畫與輪播效果
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 後台管理員
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- 登入驗證
+- 後台功能請登入管理員帳號 帳號：a0939074721@gmail.com 密碼：tmdd1234
+- 商品 CRUD 功能（含 Modal 編輯視窗）
+- 訂單查看與到貨日排序
+- 資料表單驗證與回饋提示
 
-### `npm test`
+# 🛠️ 技術棧
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **前端框架**：React 18
+- **樣式庫**：Bootstrap 5、SCSS
+- **動畫工具**：Swiper.js、AOS
+- **表單處理**：React Hook Form
+- **狀態管理**：React Context API
+- **路由管理**：React Router v6
+- **API 處理**：Axios
+- **後端來源**：六角 API 或自建後端
 
-### `npm run build`
+# ⚙️ 安裝與執行
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```bash
+git clone https://github.com/Abby-Chou/react-final-record.github.io.git
+cd REACT-FINAL-RECORD
+npm install
+```

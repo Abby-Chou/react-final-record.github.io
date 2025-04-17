@@ -1,0 +1,13 @@
+.vertical-text {
+  writing-mode: vertical-rl; /* 垂直方向，從右往左 */
+  text-orientation: upright; /* 保持字體直立 */
+  white-space: nowrap;
+  font-weight: bold;
+}
+
+body {
+  font-family: "Noto Sans TC", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
