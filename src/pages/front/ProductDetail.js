@@ -63,7 +63,7 @@ export default function ProductDetail() {
         `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/cart`,
         data
       );
-      console.log("加入購物車成功");
+      // console.log("加入購物車成功");
 
       await getCart(); // 第一次更新購物車
 
@@ -74,7 +74,7 @@ export default function ProductDetail() {
             data: { code: appliedCoupon },
           }
         );
-        console.log("自動重新套用優惠碼成功");
+        // console.log("自動重新套用優惠碼成功");
         await getCart(); // 第二次更新購物車（拿到 final_total）
       }
       setIsLoading(false);
@@ -91,7 +91,7 @@ export default function ProductDetail() {
     const filtered = filteredOrigin.filter(
       (item) => item.title !== singleProduct.title
     );
-    console.log("測試", filtered);
+    // console.log("測試", filtered);
     setTheseProducts(filtered);
   }, [products, singleProduct]);
   return (

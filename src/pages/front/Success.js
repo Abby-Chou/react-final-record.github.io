@@ -32,7 +32,7 @@ export default function Success() {
         setLoading(false);
         getCartRef.current();
       } catch (error) {
-        console.error("取得訂單失敗", error);
+        // console.error("取得訂單失敗", error);
         setLoading(false);
       }
     };

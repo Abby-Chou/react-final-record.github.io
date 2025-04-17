@@ -23,7 +23,7 @@ export default function Products() {
     const allProductRes = await axios.get(
       `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/products/all`
     );
-    console.log(allProductRes);
+    // console.log(allProductRes);
     setProducts(allProductRes.data.products);
   };
 

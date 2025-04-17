@@ -25,7 +25,7 @@ export default function Cart() {
             data: { code: appliedCoupon },
           }
         );
-        console.log("自動重新套用優惠碼成功");
+        // console.log("自動重新套用優惠碼成功");
         await getCart(); // 再次拿回有折扣的 final_total
       } catch (error) {
         console.log("自動套用優惠碼失敗", error);
@@ -78,7 +78,7 @@ export default function Cart() {
         `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/coupon`,
         data
       );
-      console.log("套用優惠碼成功");
+      // console.log("套用優惠碼成功");
       setAppliedCoupon(codeData); // 儲存優惠碼到 context
       getCartAndReapplyCoupon();
       setIsLoading(false);

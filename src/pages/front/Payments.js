@@ -49,7 +49,7 @@ export default function Payments() {
         orderData
       );
 
-      console.log("成功建立訂單", orderRes);
+      // console.log("成功建立訂單", orderRes);
       const orderId = orderRes?.data?.orderId;
       setOrderId(orderId); // 儲存 orderId 到 context
 

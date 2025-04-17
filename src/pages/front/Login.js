@@ -39,7 +39,7 @@ export default function Login() {
       }
       setIsLoading(false);
     } catch (error) {
-      console.error("登入錯誤：", error);
+      // console.error("登入錯誤：", error);
       setLoginState({ message: "伺服器錯誤，請稍後再試。" });
     }
   };

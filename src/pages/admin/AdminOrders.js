@@ -29,7 +29,7 @@ export default function AdminOrders() {
       const productRes = await axios.get(
         `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/orders?page=${page}`
       );
-      console.log("Orders", productRes);
+      // console.log("Orders", productRes);
       setOrders(productRes.data.orders);
       setPagination(productRes.data.pagination);
       setIsLoading(false);
@@ -76,7 +76,7 @@ export default function AdminOrders() {
       const res = await axios.delete(
         `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/order/${id}`
       );
-      console.log(res);
+      // console.log(res);
       if (res.data.success) {
         getOrders();
         closeDeleteModal();

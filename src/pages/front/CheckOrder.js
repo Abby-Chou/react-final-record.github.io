@@ -15,7 +15,7 @@ export default function CheckOrder() {
       const orderDetailRes = await axios.get(
         `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/order/${orderId}`
       );
-      console.log(orderDetailRes);
+      // console.log(orderDetailRes);
       const order = orderDetailRes.data.order;
       const productsDetail = Object.values(order.products || {});
       setOrderDetail(order);
@@ -23,7 +23,7 @@ export default function CheckOrder() {
       setIsLoading(false);
       setError(false);
     } catch (error) {
-      console.error("取得訂單失敗", error);
+      // console.error("取得訂單失敗", error);
       setIsLoading(false);
       setError(true);
     }

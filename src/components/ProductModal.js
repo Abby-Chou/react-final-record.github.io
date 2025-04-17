@@ -79,7 +79,7 @@ export default function ProductModal({
       const res = await axios[method](api, {
         data: tempData,
       });
-      console.log(res);
+      // console.log(res);
       if (res.data.success) {
         handleSuccessMessage(dispatch, res);
       } else {
@@ -106,7 +106,7 @@ export default function ProductModal({
         `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/upload`,
         formData
       );
-      console.log(res);
+      // console.log(res);
       const { imageUrl } = res.data;
 
       setTempData({ ...tempData, imageUrl: imageUrl });

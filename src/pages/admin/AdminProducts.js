@@ -42,7 +42,7 @@ export default function AdminProducts() {
     const productRes = await axios.get(
       `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/products/all`
     );
-    console.log(productRes);
+    // console.log(productRes);
     setProducts(Object.values(productRes.data.products));
     setIsLoading(false);
     // setPagination(productRes.data.pagination);
@@ -73,7 +73,7 @@ export default function AdminProducts() {
       const res = await axios.delete(
         `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/product/${id}`
       );
-      console.log(res);
+      // console.log(res);
       if (res.data.success) {
         getProducts();
         closeDeleteModal();

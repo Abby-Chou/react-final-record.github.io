@@ -17,11 +17,11 @@ export default function OrderModal({ closeOrderModal, getOrders, tempOrder }) {
 
   const handleChange = (e) => {
     // console.log(e);
-    console.log("onChange", e);
+    // console.log("onChange", e);
     const { value, name } = e.target;
 
     setTempData({ ...tempData, [name]: value });
-    console.log("更新", tempData);
+    // console.log("更新", tempData);
   };
 
   const submit = async () => {
@@ -32,7 +32,7 @@ export default function OrderModal({ closeOrderModal, getOrders, tempOrder }) {
           data: tempData,
         }
       );
-      console.log(res);
+      // console.log(res);
       if (res.data.success) {
         handleSuccessMessage(dispatch, res);
       } else {

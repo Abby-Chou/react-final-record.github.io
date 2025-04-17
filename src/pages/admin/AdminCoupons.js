@@ -24,7 +24,7 @@ export default function AdminCoupons() {
       const couponRes = await axios.get(
         `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/coupons?page=${page}`
       );
-      console.log(couponRes);
+      // console.log(couponRes);
       setCoupons(couponRes.data.coupons);
       setPagination(couponRes.data.pagination);
       setIsLoading(false);
@@ -57,7 +57,7 @@ export default function AdminCoupons() {
       const res = await axios.delete(
         `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/coupon/${id}`
       );
-      console.log(res);
+      // console.log(res);
       if (res.data.success) {
         getCoupons();
         closeDeleteModal();

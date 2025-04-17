@@ -63,7 +63,7 @@ export default function CouponModal({
           due_date: date.getTime(), // 轉換成 unix timestamp
         },
       });
-      console.log(res);
+      // console.log(res);
       closeCouponModal(); // 關掉 Modal
       getCoupons(); // 重新發出 API request
     } catch (error) {

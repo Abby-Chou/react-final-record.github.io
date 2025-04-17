@@ -21,7 +21,7 @@ export default function ProductCard({ product, getCart }) {
         `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/cart`,
         data
       );
-      console.log("加入購物車成功");
+      // console.log("加入購物車成功");
 
       await getCart(); // 第一次更新購物車
 
@@ -32,7 +32,7 @@ export default function ProductCard({ product, getCart }) {
             data: { code: appliedCoupon },
           }
         );
-        console.log("自動重新套用優惠碼成功");
+        // console.log("自動重新套用優惠碼成功");
         await getCart(); // 第二次更新購物車（拿到 final_total）
       }
     } catch (error) {
