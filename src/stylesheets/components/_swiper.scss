@@ -8,8 +8,8 @@
   color: #d1d6dd !important; /* 滑過變色 */
 }
 
-.commets-swiper {
-  height: 120px;
+.comments-swiper {
+  height: 150px;
 }
 
 .product-swiper {
@@ -26,7 +26,7 @@
 
 // 適用 md
 @media (min-width: 768px) {
-  .commets-swiper {
+  .comments-swiper {
     height: 240px;
   }
   .product-swiper {
@@ -44,7 +44,7 @@
     object-fit: cover;
     width: 100%;
   }
-  .commets-swiper {
+  .comments-swiper {
     height: 360px;
   }
 }

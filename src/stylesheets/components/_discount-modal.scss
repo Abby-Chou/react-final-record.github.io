@@ -1,0 +1,40 @@
+/* 限定這個 modal */
+.discount-modal .modal-content {
+  border-radius: 1rem;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
+  border: none;
+}
+
+.discount-modal .modal-body {
+  padding: 2rem 1.5rem;
+}
+
+.discount-modal .discount-icon {
+  width: 50px;
+  height: 50px;
+  vertical-align: middle;
+}
+
+.discount-modal .discount-code {
+  background-color: #ffe6eb;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  color: #d63384;
+}
+
+.discount-modal .copy-hint {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.discount-modal.fade .modal-dialog {
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+  transform: translateY(-20px);
+  opacity: 0;
+}
+
+.discount-modal.fade.show .modal-dialog {
+  transform: translateY(0);
+  opacity: 1;
+}

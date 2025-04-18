@@ -30,7 +30,9 @@ export default function SuccessModal({
                 className="btn btn-dark p-3 my-3 rounded-0"
                 onClick={() => {
                   closeSuccessModal();
-                  navigate(`/success/${orderId}`);
+                  if (success) {
+                    navigate(`/success/${orderId}`);
+                  }
                 }}
               >
                 確認完成訂單

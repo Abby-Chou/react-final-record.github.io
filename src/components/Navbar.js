@@ -79,7 +79,7 @@ export default function Navbar({ cartData }) {
                 </li>
               </ul>
             </div>
-            <div className="navbar-actions d-flex align-items-center mt-1 mt-lg-0">
+            <div className="navbar-actions d-flex align-items-center mt-1 mt-lg-0 me-n2 me-sp-0">
               <button
                 type="button"
                 className="nav-link me-4"

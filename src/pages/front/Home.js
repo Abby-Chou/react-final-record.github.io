@@ -6,6 +6,7 @@ import { Autoplay, EffectFade, Navigation } from "swiper/modules";
 import { Link, useOutletContext } from "react-router-dom";
 import { useLoading } from "../../components/LoadingContext";
 import { CouponContext } from "../../components/CouponProvider";
+import DiscountModal from "../../components/DiscountModal";
 import pie from "../../assets/apple-pie.png";
 import "swiper/css";
 import "swiper/css/autoplay";
@@ -90,6 +91,8 @@ export default function Home() {
 
   return (
     <>
+      <DiscountModal />
+
       <Swiper
         modules={[Autoplay, EffectFade, Navigation]}
         autoplay={{ delay: 5000, disableOnInteraction: false }}
@@ -270,7 +273,7 @@ export default function Home() {
                 768: { slidesPerView: 2 }, // 平板顯示 2 則
                 992: { slidesPerView: 3 }, // 桌機顯示 3 則
               }}
-              className="commets-swiper"
+              className="comments-swiper"
             >
               {comments.map((comment, index) => (
                 <SwiperSlide key={index}>
