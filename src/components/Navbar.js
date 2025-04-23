@@ -1,5 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
+import SearchBar from "./SearchBar";
 import { useState, useContext } from "react";
 import { SearchContext } from "./SearchProvider";
 
@@ -9,6 +10,14 @@ export default function Navbar({ cartData }) {
   const { search, setSearch, setAppliedSearch } = useContext(SearchContext);
   const navigate = useNavigate();
 
+  const handleInput = (e) => {
+    const { code, key } = e;
+    if (code === "Enter" || key === "Enter") {
+      handleSearch();
+    } else {
+      setSearch(e.target.value);
+    }
+  };
   const handleSearch = () => {
     if (search.trim() !== "") {
       setAppliedSearch(search); //  實際套用搜尋
@@ -112,17 +121,18 @@ export default function Navbar({ cartData }) {
               </button>
               {showSearch && (
                 <div className="search-box">
-                  <div className="input-group">
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="請輸入產品名"
-                      onChange={(e) => setSearch(e.target.value)}
-                    />
-                    <button className="btn btn-danger" onClick={handleSearch}>
-                      搜尋
-                    </button>
-                  </div>
+                  <SearchBar
+                    search={search}
+                    setSearch={setSearch}
+                    setAppliedSearch={setAppliedSearch}
+                    onSearchSuccess={() =>
+                      navigate("/products/allProducts", {
+                        state: { fromSearch: true },
+                      })
+                    }
+                    hideAfterSearch={() => setShowSearch(false)}
+                    autoFocus={true}
+                  />
                 </div>
               )}
             </div>

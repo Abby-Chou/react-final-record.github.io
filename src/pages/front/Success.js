@@ -79,18 +79,19 @@ export default function Success() {
                   className="btn btn-link p-0 ms-1 mt-n3 text-decoration-none"
                   title="複製訂單編號"
                 >
-                  <i className="bi bi-copy text-pink"></i>
+                  <i
+                    className={`${
+                      copied ? "bi bi-check-lg" : "bi bi-copy"
+                    } text-pink`}
+                  ></i>
                 </button>
-                {copied && (
-                  <span className="text-pink ms-4">已複製至剪貼簿</span>
-                )}
               </p>
 
               <p className="fw-bold text-gray">
                 訂單將於 7 天內交由物流宅配送貨
               </p>
               <Link
-                to="/products"
+                to="/products/allProducts"
                 className="btn btn-outline-dark me-2 rounded-0 mb-4"
               >
                 回到首頁

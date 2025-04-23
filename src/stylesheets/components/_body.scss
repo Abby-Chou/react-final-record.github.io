@@ -1,0 +1,7 @@
+body {
+  overflow-x: hidden;
+}
+
+body.modal-open {
+  overflow-x: auto; /* 或 initial 或 unset，讓 Bootstrap 管 */
+}

@@ -26,6 +26,7 @@ export default function CheckOrder() {
       // console.error("取得訂單失敗", error);
       setIsLoading(false);
       setError(true);
+      setOrderDetail({});
     }
   };
 
