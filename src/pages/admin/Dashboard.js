@@ -16,7 +16,7 @@ export default function Dashboard() {
     document.cookie =
       "hexToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 
-    navigate("/login");
+    navigate("/adminLogin");
   };
   const token = document.cookie
     .split("; ")
@@ -79,15 +79,9 @@ export default function Dashboard() {
           >
             <ul className="navbar-nav">
               <li className="nav-item me-2">
-                <button
-                  type="button"
-                  className="btn btn-sm btn-fb"
-                  onClick={() => {
-                    navigate("/");
-                  }}
-                >
+                <Link type="button" className="btn btn-sm btn-fb" to="/">
                   返回首頁
-                </button>
+                </Link>
               </li>
               <li className="nav-item">
                 <button

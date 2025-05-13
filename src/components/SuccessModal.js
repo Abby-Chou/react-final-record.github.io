@@ -27,11 +27,11 @@ export default function SuccessModal({
               <div>{success ? "付款成功" : "付款失敗, 請重新確認"}</div>
               <button
                 type="button"
-                className="btn btn-dark p-3 my-3 rounded-0"
+                className="btn btn-pink p-3 my-3 rounded-0"
                 onClick={() => {
                   closeSuccessModal();
                   if (success) {
-                    navigate(`/success/${orderId}`);
+                    navigate(`/orderSuccess/${orderId}`);
                   }
                 }}
               >

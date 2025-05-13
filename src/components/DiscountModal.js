@@ -47,7 +47,7 @@ export default function DiscountModal() {
                       setCopied(true);
                       setTimeout(() => setCopied(false), 2000);
                     }}
-                    className="btn btn-link p-0 ms-1 mt-n3 text-decoration-none"
+                    className="btn btn-link p-0 ms-1 mt-n2 text-decoration-none"
                     title="複製折扣碼"
                   >
                     <i

@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import { Link, useOutletContext, useParams } from "react-router-dom";
 
-export default function Success() {
+export default function OrderSuccess() {
   const { orderId } = useParams();
   const [orderData, setOrderData] = useState(null); // 預設為 null
   const [shippingFee, setShippingFee] = useState(0);
@@ -64,7 +64,7 @@ export default function Success() {
         <div className="mt-4 mt-md-5 mb-6">
           <div className="row">
             <div className="col-md-6">
-              <h2 className="fw-bold text-gray">
+              <h2 className="fw-bold text-gray mb-4">
                 餐點選購成功 <i className="bi bi-check-circle text-success"></i>
               </h2>
               <p className="fw-bold text-gray">
@@ -76,7 +76,7 @@ export default function Success() {
                     setCopied(true);
                     setTimeout(() => setCopied(false), 2000);
                   }}
-                  className="btn btn-link p-0 ms-1 mt-n3 text-decoration-none"
+                  className="btn btn-link p-0 ms-1 mt-n2 text-decoration-none"
                   title="複製訂單編號"
                 >
                   <i
@@ -92,9 +92,9 @@ export default function Success() {
               </p>
               <Link
                 to="/products/allProducts"
-                className="btn btn-outline-dark me-2 rounded-0 mb-4"
+                className="btn btn-pink me-2 rounded-0 mb-4 fs-5 p-2"
               >
-                回到首頁
+                繼續逛逛
               </Link>
             </div>
 
@@ -126,10 +126,12 @@ export default function Success() {
                             <div className="d-flex justify-content-between mt-auto">
                               <p className="text-muted mb-0">
                                 <small className="fw-bold">
-                                  NT$ {item.product.price}
+                                  NT$ {item.product.price.toLocaleString()}
                                 </small>
                               </p>
-                              <p className="mb-0">NT$ {item.total}</p>
+                              <p className="mb-0">
+                                NT$ {item.total.toLocaleString()}
+                              </p>
                             </div>
                           </div>
                         </div>
@@ -147,7 +149,7 @@ export default function Success() {
                               小計
                             </th>
                             <td className="text-end border-0 px-0 pt-0">
-                              NT$ {orderTotal}
+                              NT$ {orderTotal.toLocaleString()}
                             </td>
                           </tr>
                           <tr
@@ -164,7 +166,7 @@ export default function Success() {
                               折抵後金額
                             </th>
                             <td className="text-end border-0 px-0 pt-3 text-success fw-bold">
-                              NT$ {orderData.total}
+                              NT$ {orderData.total.toLocaleString()}
                             </td>
                           </tr>
                           <tr>
@@ -175,7 +177,7 @@ export default function Success() {
                               宅配運費
                             </th>
                             <td className="text-end border-0 px-0 pt-3 ">
-                              NT$ {shippingFee}
+                              NT$ {shippingFee.toLocaleString()}
                             </td>
                           </tr>
                           <tr>
@@ -194,7 +196,7 @@ export default function Success() {
                       <div className="d-flex justify-content-between mt-2">
                         <p className="mb-0 h4 fw-bold">總金額</p>
                         <p className="mb-0 h4 fw-bold">
-                          NT$ {orderData.total + shippingFee}
+                          NT$ {(orderData.total + shippingFee).toLocaleString()}
                         </p>
                       </div>
                     </li>

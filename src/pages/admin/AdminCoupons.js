@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import CouponModal from "../../components/CouponModal";
 import { Modal } from "bootstrap";
@@ -18,19 +18,35 @@ export default function AdminCoupons() {
   const couponModal = useRef(null);
   const deleteModal = useRef(null);
 
-  const getCoupons = useCallback(
-    async (page = 1) => {
-      setIsLoading(true);
-      const couponRes = await axios.get(
-        `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/coupons?page=${page}`
-      );
-      // console.log(couponRes);
-      setCoupons(couponRes.data.coupons);
-      setPagination(couponRes.data.pagination);
-      setIsLoading(false);
-    },
-    [setIsLoading]
-  );
+  const getCoupons = async (page = 1) => {
+    setIsLoading(true);
+    const couponRes = await axios.get(
+      `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/coupons?page=${page}`
+    );
+
+    setCoupons(couponRes.data.coupons);
+    setPagination(couponRes.data.pagination);
+    setIsLoading(false);
+  };
+
+  const handleSubmit = async (data, date) => {
+    setIsLoading(true);
+    let api = `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/coupon`;
+    let method = "post";
+    if (type === "edit") {
+      api = `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/coupon/${tempCoupon.id}`;
+      method = "put";
+    }
+    await axios[method](api, {
+      data: {
+        ...data,
+        due_date: date.getTime(),
+      },
+    });
+    closeCouponModal();
+    getCoupons();
+    setIsLoading(false);
+  };
 
   const openDeleteModal = (thisCoupon) => {
     setTempCoupon(thisCoupon);
@@ -53,19 +69,22 @@ export default function AdminCoupons() {
 
   const deleteCoupon = async (id) => {
     setIsLoading(true);
-    try {
-      const res = await axios.delete(
-        `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/coupon/${id}`
-      );
-      // console.log(res);
-      if (res.data.success) {
-        getCoupons();
-        closeDeleteModal();
-      }
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
+
+    const res = await axios.delete(
+      `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/coupon/${id}`
+    );
+
+    if (res.data.success) {
+      getCoupons();
+      closeDeleteModal();
     }
+    setIsLoading(false);
+  };
+
+  const formatDate = (date) => {
+    return `${date.getFullYear().toString()}-${(date.getMonth() + 1)
+      .toString()
+      .padStart(2, 0)}-${date.getDate().toString().padStart(2, 0)}`;
   };
 
   useEffect(() => {
@@ -78,15 +97,16 @@ export default function AdminCoupons() {
     });
 
     getCoupons();
-  }, [getCoupons]);
+  }, []);
   return (
     <>
       <div className="p-3">
         <CouponModal
           closeCouponModal={closeCouponModal}
-          getCoupons={getCoupons}
           tempCoupon={tempCoupon}
           type={type}
+          formatDate={formatDate}
+          onSubmit={handleSubmit}
         />
         <DeleteModal
           closeDeleteModal={closeDeleteModal}
@@ -122,23 +142,13 @@ export default function AdminCoupons() {
                 <tr key={coupon.id}>
                   <td>{coupon.title}</td>
                   <td> {coupon.percent} %</td>
-                  <td>
-                    {new Date(coupon.due_date).getFullYear().toString()}-
-                    {(new Date(coupon.due_date).getMonth() + 1)
-                      .toString()
-                      .padStart(2, 0)}
-                    -
-                    {new Date(coupon.due_date)
-                      .getDate()
-                      .toString()
-                      .padStart(2, 0)}
-                  </td>
+                  <td>{formatDate(new Date(coupon.due_date))}</td>
                   <td>{coupon.code}</td>
                   <td>{coupon.is_enabled ? "啟用" : "未啟用"}</td>
                   <td>
                     <button
                       type="button"
-                      className="btn btn-secondary btn-sm"
+                      className="btn btn-pink btn-sm"
                       onClick={() => openCouponModal("edit", coupon)}
                     >
                       編輯

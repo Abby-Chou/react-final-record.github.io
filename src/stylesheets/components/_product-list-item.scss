@@ -1,6 +1,7 @@
 .product-list-item {
   transition: background-color 0.3s ease;
   border: none;
+  width: 250px;
 }
 
 .product-list-item:hover {
@@ -26,4 +27,16 @@
   background-color: #ffe3d6;
   color: #bb6b4c !important;
   font-weight: bold;
+}
+
+@media (min-width: 768px) {
+  .product-list-item {
+    width: 150px;
+  }
+}
+
+@media (min-width: 992px) {
+  .product-list-item {
+    width: 250px;
+  }
 }

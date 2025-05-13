@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 export default function Pagination({
   totalItems,
   itemsPerPage,
@@ -5,18 +7,19 @@ export default function Pagination({
   changePage,
 }) {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
-  // console.log(currentPage);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPage]);
+
   if (totalPages <= 1) return null;
 
   return (
     <nav>
-      <ul className="list-inline">
-        <li
-          className={`list-inline-item ${currentPage === 1 ? "disabled" : ""}`}
-        >
+      <ul className="list-inline fs-5">
+        <li className={`list-inline-item ${currentPage === 1 ? "d-none" : ""}`}>
           <button
             className="btn btn-link p-0 border-0"
-            disabled={currentPage === 1}
             onClick={() => changePage(currentPage - 1)}
           >
             <i className="bi bi-caret-left-fill text-dark"></i>
@@ -25,9 +28,9 @@ export default function Pagination({
         {Array.from({ length: totalPages }, (_, i) => (
           <li
             key={i}
-            className={`list-inline-item ${
+            className={`list-inline-item align-middle ${
               currentPage === i + 1 ? "link-dark" : "link-secondary"
-            }`}
+            } `}
           >
             <a type="button" onClick={() => changePage(i + 1)}>
               {i + 1}
@@ -36,7 +39,7 @@ export default function Pagination({
         ))}
         <li
           className={`list-inline-item ${
-            currentPage === totalPages ? "disabled" : ""
+            currentPage === totalPages ? "d-none" : ""
           }`}
         >
           <button

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 
 export default function CouponModal({
   closeCouponModal,
-  getCoupons,
+  onSubmit,
   tempCoupon,
   type,
+  formatDate,
 }) {
   const [tempData, setTempData] = useState({
     title: "",
@@ -34,7 +34,6 @@ export default function CouponModal({
   }, [type, tempCoupon]);
 
   const handleChange = (e) => {
-    // console.log(e);
     const { value, name, checked } = e.target;
     if (["price", "origin_price"].includes(name)) {
       // 若 name 為 price、origin_price 就要把 value 轉成數字
@@ -44,30 +43,6 @@ export default function CouponModal({
       setTempData({ ...tempData, [name]: +checked });
     } else {
       setTempData({ ...tempData, [name]: value });
-    }
-  };
-
-  const submit = async () => {
-    try {
-      // 送出資料為物件時, 必須帶上 data
-      let api = `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/coupon`;
-      let method = "post"; // 預設是走新增 sumbit
-      if (type === "edit") {
-        // 當 tpye = edit 時, 變成修改編輯的 sumbit
-        api = `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/coupon/${tempCoupon.id}`;
-        method = "put";
-      }
-      const res = await axios[method](api, {
-        data: {
-          ...tempData,
-          due_date: date.getTime(), // 轉換成 unix timestamp
-        },
-      });
-      // console.log(res);
-      closeCouponModal(); // 關掉 Modal
-      getCoupons(); // 重新發出 API request
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -95,7 +70,7 @@ export default function CouponModal({
             <div className="modal-body">
               <div className="mb-2">
                 <label className="w-100" htmlFor="title">
-                  標題
+                  標題 <span className="text-danger">*</span>
                   <input
                     type="text"
                     id="title"
@@ -110,7 +85,7 @@ export default function CouponModal({
               <div className="row">
                 <div className="col-md-6 mb-2">
                   <label className="w-100" htmlFor="percent">
-                    折扣金額
+                    折扣 % <span className="text-danger">*</span>
                     <input
                       type="number"
                       name="percent"
@@ -124,7 +99,7 @@ export default function CouponModal({
                 </div>
                 <div className="col-md-6 mb-2">
                   <label className="w-100" htmlFor="due_date">
-                    到期日
+                    到期日 <span className="text-danger">*</span>
                     <input
                       type="date"
                       id="due_date"
@@ -132,17 +107,10 @@ export default function CouponModal({
                       placeholder="請輸入到期日"
                       className="form-control mt-1"
                       onChange={(e) => {
-                        console.log(e.target.value);
                         setDate(new Date(e.target.value));
                       }}
-                      value={`${date.getFullYear().toString()}-${(
-                        date.getMonth() + 1
-                      )
-                        .toString()
-                        .padStart(2, 0)}-${date
-                        .getDate()
-                        .toString()
-                        .padStart(2, 0)}`}
+                      value={formatDate(date)}
+                      min={formatDate(new Date())}
                     />
                   </label>
                 </div>
@@ -184,7 +152,7 @@ export default function CouponModal({
               <button
                 type="button"
                 className="btn btn-primary"
-                onClick={submit}
+                onClick={() => onSubmit(tempData, date)}
               >
                 儲存
               </button>

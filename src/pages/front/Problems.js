@@ -6,20 +6,20 @@ export default function Problems() {
           className="p-5 mb-5"
           style={{
             backgroundImage:
-              "url(https://plus.unsplash.com/premium_photo-1700398227316-e7c1fbe983c3?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)",
+              "url(https://images.unsplash.com/photo-1573050329989-9c2509328687?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)",
             height: "500px",
             backgroundPosition: "center",
             backgroundSize: "cover",
           }}
         ></div>
-        <div className="container px-6">
+        <div className="container px-3 px-md-6">
           <div className="row justify-content-center">
             <div className="col-md-10">
               <h3 className="mb-4">
                 <i className="bi bi-pin-angle-fill me-2"></i>常見問題
               </h3>
               <div className="accordion" id="accordion">
-                <div className="accordion-item bg-light-gray">
+                <div className="accordion-item">
                   <h2 className="accordion-header" id="accordion1">
                     <button
                       className="accordion-button"
@@ -52,7 +52,7 @@ export default function Problems() {
                     </div>
                   </div>
                 </div>
-                <div className="accordion-item bg-light-gray">
+                <div className="accordion-item">
                   <h2 className="accordion-header" id="accordion2">
                     <button
                       className="accordion-button"
@@ -94,7 +94,7 @@ export default function Problems() {
                     </div>
                   </div>
                 </div>
-                <div className="accordion-item bg-light-gray">
+                <div className="accordion-item">
                   <h2 className="accordion-header" id="accordion3">
                     <button
                       className="accordion-button"
@@ -158,7 +158,7 @@ export default function Problems() {
                     </div>
                   </div>
                 </div>
-                <div className="accordion-item bg-light-gray">
+                <div className="accordion-item">
                   <h2 className="accordion-header" id="accordion4">
                     <button
                       className="accordion-button"

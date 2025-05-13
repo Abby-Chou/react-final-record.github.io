@@ -4,16 +4,23 @@ export default function Progress({ stepItems, currentStep, width }) {
       <div className="position-relative my-5">
         {/* 橫線：放在背景，穿過圓形中間 */}
         <div
-          className="position-absolute start-0 w-100 bg-light"
-          style={{ top: "1.1rem", height: "2px", zIndex: 0 }}
-        ></div>
-        <div
-          className="position-absolute start-0 bg-warning"
+          className="position-absolute bg-light"
           style={{
             top: "1.1rem",
+            left: "12.5%", // 第一顆與第二顆之間
+            width: "75%", // 扣掉最左與最右的 12.5%
+            height: "2px",
+            zIndex: 0,
+          }}
+        ></div>
+        <div
+          className="position-absolute bg-warning"
+          style={{
+            top: "1.1rem",
+            left: "12.5%", // 對齊起點
+            width: width, // 例如 "12%", "40%", "65%" 等從外部傳入
             height: "2px",
             zIndex: 1,
-            width: width, // 要調整成每個進度的 % 數
             transition: "width 0.3s",
           }}
         ></div>

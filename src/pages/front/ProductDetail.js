@@ -1,9 +1,10 @@
-import { useEffect, useState, useContext, useCallback } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { useOutletContext, useParams, Link } from "react-router-dom";
-import { CouponContext } from "../../components/CouponProvider";
+
 import { useLoading } from "../../components/LoadingContext";
 import home from "../../assets/home.png";
+import { CartQtyContext } from "../../components/CartQtyProvider";
 import "swiper/css";
 import "swiper/css/autoplay";
 import "swiper/css/effect-fade";
@@ -13,86 +14,46 @@ import { Autoplay } from "swiper/modules";
 
 export default function ProductDetail() {
   const [singleProduct, setSingleProduct] = useState({});
-  const [cartQuantity, setCartQuantity] = useState(1);
+
   const [categoryTitle, setCategoryTitle] = useState("");
   const [theseProducts, setTheseProducts] = useState([]);
   const { setIsLoading } = useLoading();
   const { id } = useParams();
-  const { products, getCart } = useOutletContext();
+  const { products, addToCart } = useOutletContext();
+  const { cartQuantity, setCartQuantity } = useContext(CartQtyContext);
 
-  const { appliedCoupon } = useContext(CouponContext); // ✅ 取得優惠碼
-
-  const getProductById = useCallback(
-    async (id) => {
-      setIsLoading(true);
-      try {
-        const productRes = await axios.get(
-          `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/product/${id}`
-        );
-        // console.log(productRes);
-        setSingleProduct(productRes.data.product);
-        if (productRes.data.product.category === "cakes") {
-          setCategoryTitle("經典蛋糕");
-        } else if (productRes.data.product.category === "pies") {
-          setCategoryTitle("特色甜派");
-        } else {
-          setCategoryTitle("懷舊鹹派");
-        }
-        setIsLoading(false);
-      } catch (error) {
-        console.log("取得商品失敗", error);
-      }
-    },
-    [setIsLoading]
-  );
-
+  // 取得單一產品資料與寫入分類
   useEffect(() => {
-    getProductById(id);
-  }, [id, getProductById]);
-
-  const addToCart = async () => {
-    const data = {
-      data: {
-        product_id: singleProduct.id,
-        qty: cartQuantity,
-      },
-    };
-    setIsLoading(true);
-    try {
-      await axios.post(
-        `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/cart`,
-        data
+    const getProductById = async (id) => {
+      setIsLoading(true);
+      const productRes = await axios.get(
+        `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/product/${id}`
       );
-      // console.log("加入購物車成功");
 
-      await getCart(); // 第一次更新購物車
-
-      if (appliedCoupon) {
-        await axios.post(
-          `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/coupon`,
-          {
-            data: { code: appliedCoupon },
-          }
-        );
-        // console.log("自動重新套用優惠碼成功");
-        await getCart(); // 第二次更新購物車（拿到 final_total）
+      setSingleProduct(productRes.data.product);
+      const category = productRes.data.product.category;
+      if (category === "cakes") {
+        setCategoryTitle("經典蛋糕");
+      } else if (category === "pies") {
+        setCategoryTitle("特色派類");
+      } else {
+        setCategoryTitle("甜甜圈類");
       }
       setIsLoading(false);
-    } catch (error) {
-      console.error("加入購物車或套用優惠碼失敗", error);
-    }
-  };
+    };
 
+    getProductById(id);
+  }, [id, setIsLoading]);
+
+  // 篩選相關產品資料
   useEffect(() => {
-    const filteredOrigin = products.filter(
-      (item) => item.category === singleProduct.category
-    );
+    if (!singleProduct?.category || !singleProduct?.title) return;
 
-    const filtered = filteredOrigin.filter(
-      (item) => item.title !== singleProduct.title
-    );
-    // console.log("測試", filtered);
-    setTheseProducts(filtered);
+    const relatedProducts = products
+      .filter((item) => item.category === singleProduct.category)
+      .filter((item) => item.title !== singleProduct.title);
+
+    setTheseProducts(relatedProducts);
   }, [products, singleProduct]);
   return (
     <div className="container">
@@ -126,7 +87,7 @@ export default function ProductDetail() {
         </ol>
       </nav>
       <div className="row justify-content-center mt-lg-4 mb-lg-7 mb-2 px-5 gx-5 gy-3">
-        <div className="col-md-5">
+        <div className="col-md-6 col-lg-5">
           <div>
             <img
               src={singleProduct.imageUrl}
@@ -135,7 +96,7 @@ export default function ProductDetail() {
             />
           </div>
         </div>
-        <div className="col-md-5">
+        <div className="col-md-6 col-lg-5">
           <h2 className="mb-2">{singleProduct.title}</h2>
           <p className="text-danger">
             首購折扣碼 P2025 , 享 8 折優惠
@@ -145,7 +106,9 @@ export default function ProductDetail() {
           <p>請於結帳時選取希望到貨日, 若無選取系統自動待入訂購日期 + 7 天</p>
 
           <p>{singleProduct.content}</p>
-          <h5 className="fw-bold">NT${singleProduct.price}</h5>
+          <h5 className="fw-bold">
+            NT${singleProduct?.price?.toLocaleString()}
+          </h5>
           <div className="input-group mb-3 border mt-3">
             <div className="input-group-prepend">
               <button
@@ -160,7 +123,7 @@ export default function ProductDetail() {
               </button>
             </div>
             <input
-              type="number"
+              type="text"
               className="form-control border-0 text-center my-auto shadow-none"
               readOnly
               value={cartQuantity || 1}
@@ -170,7 +133,9 @@ export default function ProductDetail() {
                 className="btn btn-outline-dark rounded-0 border-0 py-3"
                 type="button"
                 id="button-addon2"
-                onClick={() => setCartQuantity((pre) => pre + 1)}
+                onClick={() =>
+                  setCartQuantity((pre) => (pre === 10 ? pre : pre + 1))
+                }
               >
                 <i className="bi bi-plus"></i>
               </button>
@@ -179,13 +144,15 @@ export default function ProductDetail() {
           <button
             type="button"
             className="btn btn-dark btn-block rounded-0 py-3 w-100"
-            onClick={addToCart}
+            onClick={() => {
+              addToCart(singleProduct?.id);
+            }}
           >
             加入購物車
           </button>
         </div>
-        <div className="row px-lg-5 px-2 mt-3 mt-lg-0 ms-lg-7">
-          <div className="col-md-11 mt-3 text-secondary">
+        <div className="col-md-12 col-lg-10 mt-5">
+          <div className="mt-3 text-secondary">
             <h3
               style={{
                 borderLeft: "3px solid rgba(210, 152, 121, 1)",
@@ -253,7 +220,7 @@ export default function ProductDetail() {
                 768: { slidesPerView: 2 },
                 992: { slidesPerView: 3 },
               }}
-              className="product-swiper pt-3 mt-lg-4"
+              className="product-swiper pt-3 mt-lg-4 me"
             >
               {theseProducts.map((product, index) => (
                 <SwiperSlide key={index} className="px-lg-2">
@@ -275,7 +242,7 @@ export default function ProductDetail() {
                         {product?.title}
                       </h4>
                       <p className="text-pink fs-s-20 fw-bold mb-2">
-                        NT$ {product?.price}
+                        NT$ {product?.price?.toLocaleString()}
                       </p>
                       <button
                         type="button"

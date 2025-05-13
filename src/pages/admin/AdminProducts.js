@@ -1,34 +1,33 @@
-import { useEffect, useRef, useState, useMemo, useCallback } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import axios from "axios";
 import ProductModal from "../../components/ProductModal";
 import { Modal } from "bootstrap";
 import DeleteModal from "../../components/DeleteModal";
 import Pagination from "../../components/Pagination";
+import usePagination from "../../components/usePagination";
 import { useLoading } from "../../components/LoadingContext";
+import {
+  MessageContext,
+  handleSuccessMessage,
+  handleFailMessage,
+} from "../../store/messageStore";
 
 export default function AdminProducts() {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const { setIsLoading } = useLoading();
+  const [, dispatch] = useContext(MessageContext);
 
-  // const [pagination, setPagination] = useState({});
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const filterProducts = !search
+    ? products
+    : products.filter((product) => product.category.match(search));
 
-  // 分頁計算
-  const indexOfLast = currentPage * itemsPerPage;
-  const indexOfFirst = indexOfLast - itemsPerPage;
-  const filterProducts = useMemo(() => {
-    if (!search) {
-      return products;
-    }
-    return [...products].filter((product) => {
-      return product.category.match(search);
-    });
-  }, [search, products]);
-
-  const currentProducts = filterProducts.slice(indexOfFirst, indexOfLast);
-  // const totalPages = Math.ceil(filterProducts.length / itemsPerPage);
+  const {
+    currentItems: currentProducts,
+    currentPage,
+    setCurrentPage,
+    totalItems,
+  } = usePagination(filterProducts, 10, [products]);
 
   // type: 決定 modal 展開的用途
   const [type, setType] = useState("create"); // edit
@@ -37,16 +36,15 @@ export default function AdminProducts() {
   const productModal = useRef(null);
   const deleteModal = useRef(null);
 
-  const getProducts = useCallback(async () => {
+  const getProducts = async () => {
     setIsLoading(true);
     const productRes = await axios.get(
       `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/products/all`
     );
-    // console.log(productRes);
+
     setProducts(Object.values(productRes.data.products));
     setIsLoading(false);
-    // setPagination(productRes.data.pagination);
-  }, [setIsLoading]);
+  };
 
   const openDeleteModal = (thisProduct) => {
     setTempProduct(thisProduct);
@@ -69,19 +67,39 @@ export default function AdminProducts() {
 
   const deleteProduct = async (id) => {
     setIsLoading(true);
-    try {
-      const res = await axios.delete(
-        `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/product/${id}`
-      );
-      // console.log(res);
-      if (res.data.success) {
-        getProducts();
-        closeDeleteModal();
-      }
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
+
+    const res = await axios.delete(
+      `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/product/${id}`
+    );
+
+    if (res.data.success) {
+      getProducts();
+      closeDeleteModal();
     }
+    setIsLoading(false);
+  };
+
+  const handleSubmit = async (data) => {
+    // 送出資料為物件時, 必須帶上 data
+    let api = `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/product`;
+    let method = "post"; // 預設是走新增 sumbit
+    if (type === "edit") {
+      // 當 tpye = edit 時, 變成修改編輯的 sumbit
+      api = `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/product/${tempProduct.id}`;
+      method = "put";
+    }
+    const res = await axios[method](api, {
+      data: data,
+    });
+
+    if (res.data.success) {
+      handleSuccessMessage(dispatch, res);
+    } else {
+      handleFailMessage(dispatch, res);
+    }
+
+    closeProductModal(); // 關掉 Modal
+    getProducts(); // 重新發出 API request
   };
 
   useEffect(() => {
@@ -94,11 +112,11 @@ export default function AdminProducts() {
     });
 
     getProducts();
-  }, [getProducts]);
+  }, []);
 
   useEffect(() => {
     setCurrentPage(1); // 每次進入頁面時重設頁碼
-  }, [products]);
+  }, [setCurrentPage]);
 
   return (
     <>
@@ -108,6 +126,7 @@ export default function AdminProducts() {
           getProducts={getProducts}
           tempProduct={tempProduct}
           type={type}
+          onSubmit={handleSubmit}
         />
         <DeleteModal
           closeDeleteModal={closeDeleteModal}
@@ -154,12 +173,12 @@ export default function AdminProducts() {
                 <tr key={product.id}>
                   <td style={{ width: "250px" }}>{product.category}</td>
                   <td>{product.title}</td>
-                  <td>{product.price}</td>
+                  <td>{product.price.toLocaleString()}</td>
                   <td>{product.is_enabled ? "啟用" : "未啟用"}</td>
                   <td>
                     <button
                       type="button"
-                      className="btn btn-secondary btn-sm"
+                      className="btn btn-pink btn-sm"
                       onClick={() => openProductModal("edit", product)}
                     >
                       編輯
@@ -179,12 +198,11 @@ export default function AdminProducts() {
         </table>
 
         <Pagination
-          totalItems={filterProducts.length}
-          itemsPerPage={itemsPerPage}
+          totalItems={totalItems}
+          itemsPerPage={10}
           currentPage={currentPage}
           changePage={setCurrentPage}
         />
-        {/* <AdminPagination pagination={pagination} changePage={getProducts} /> */}
       </div>
     </>
   );

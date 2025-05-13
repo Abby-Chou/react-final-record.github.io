@@ -1,7 +1,7 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 import SearchBar from "./SearchBar";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { SearchContext } from "./SearchProvider";
 
 export default function Navbar({ cartData }) {
@@ -9,25 +9,22 @@ export default function Navbar({ cartData }) {
   const [showSearch, setShowSearch] = useState(false);
   const { search, setSearch, setAppliedSearch } = useContext(SearchContext);
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
-  const handleInput = (e) => {
-    const { code, key } = e;
-    if (code === "Enter" || key === "Enter") {
-      handleSearch();
-    } else {
-      setSearch(e.target.value);
-    }
+  const handleToggle = () => {
+    setIsOpen(!isOpen);
+    setShowSearch(false);
   };
-  const handleSearch = () => {
-    if (search.trim() !== "") {
-      setAppliedSearch(search); //  實際套用搜尋
-      navigate("/products/allProducts", { state: { fromSearch: true } });
-      setShowSearch(false);
-    }
-  };
-  const handleToggle = () => setIsOpen(!isOpen);
   const handleNavClick = () => setIsOpen(false); // 點擊 nav-link 後就關閉
-  const toggleSearch = () => setShowSearch(!showSearch);
+  const toggleSearch = () => {
+    setShowSearch(!showSearch);
+    setIsOpen(false);
+  };
+
+  useEffect(() => {
+    setIsOpen(false);
+    setShowSearch(false);
+  }, [pathname]);
 
   return (
     <>
@@ -86,6 +83,15 @@ export default function Navbar({ cartData }) {
                     訂單查詢
                   </NavLink>
                 </li>
+                <li className="nav-item active me-lg-3 d-lg-none">
+                  <NavLink
+                    className="nav-link nav-link-special"
+                    to="/login"
+                    onClick={handleNavClick}
+                  >
+                    會員登入
+                  </NavLink>
+                </li>
               </ul>
             </div>
             <div className="navbar-actions d-flex align-items-center mt-1 mt-lg-0 me-n2 me-sp-0">
@@ -96,13 +102,20 @@ export default function Navbar({ cartData }) {
               >
                 <i className="bi bi-search fs-4"></i>
               </button>
-              <NavLink to="/login" className="nav-link me-4">
+              <NavLink
+                to="/login"
+                className="nav-link me-4 d-none d-lg-inline-block "
+              >
                 <i className="bi bi-person-fill fs-4"></i>
               </NavLink>
 
               <NavLink to="/cart" className="nav-link position-relative me-3">
                 <i className="bi bi-cart-fill fs-4"></i>
-                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                <span
+                  className={`position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger ${
+                    cartData?.carts?.length ? "d-inline-block" : "d-none"
+                  }`}
+                >
                   {cartData?.carts?.length}
                 </span>
               </NavLink>

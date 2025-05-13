@@ -1,14 +1,9 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import {
-  MessageContext,
-  handleFailMessage,
-  handleSuccessMessage,
-} from "../store/messageStore";
 
 export default function ProductModal({
   closeProductModal,
-  getProducts,
+  onSubmit,
   tempProduct,
   type,
 }) {
@@ -24,8 +19,6 @@ export default function ProductModal({
     is_enabled: 0,
     imageUrl: "",
   });
-
-  const [, dispatch] = useContext(MessageContext);
 
   useEffect(() => {
     if (type === "create") {
@@ -53,7 +46,6 @@ export default function ProductModal({
   };
 
   const handleChange = (e) => {
-    // console.log(e);
     const { value, name, checked } = e.target;
     if (["price", "origin_price"].includes(name)) {
       // 若 name 為 price、origin_price 就要把 value 轉成數字
@@ -66,53 +58,21 @@ export default function ProductModal({
     }
   };
 
-  const submit = async () => {
-    try {
-      // 送出資料為物件時, 必須帶上 data
-      let api = `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/product`;
-      let method = "post"; // 預設是走新增 sumbit
-      if (type === "edit") {
-        // 當 tpye = edit 時, 變成修改編輯的 sumbit
-        api = `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/product/${tempProduct.id}`;
-        method = "put";
-      }
-      const res = await axios[method](api, {
-        data: tempData,
-      });
-      // console.log(res);
-      if (res.data.success) {
-        handleSuccessMessage(dispatch, res);
-      } else {
-        handleFailMessage(dispatch, res);
-      }
-
-      closeProductModal(); // 關掉 Modal
-      getProducts(); // 重新發出 API request
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const uploadFile = async (file) => {
-    console.log(file);
     if (!file) {
       return;
     }
     const formData = new FormData();
     formData.append("file-to-upload", file);
 
-    try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/upload`,
-        formData
-      );
-      // console.log(res);
-      const { imageUrl } = res.data;
+    const res = await axios.post(
+      `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/upload`,
+      formData
+    );
 
-      setTempData({ ...tempData, imageUrl: imageUrl });
-    } catch (error) {
-      console.log(error);
-    }
+    const { imageUrl } = res.data;
+
+    setTempData({ ...tempData, imageUrl: imageUrl });
   };
   return (
     <>
@@ -142,7 +102,7 @@ export default function ProductModal({
                 <div className="col-sm-4">
                   <div className="form-group mb-2">
                     <label className="w-100" htmlFor="image">
-                      輸入圖片網址
+                      輸入圖片網址 <span className="text-danger">*</span>
                       <input
                         type="text"
                         name="imageUrl"
@@ -179,7 +139,7 @@ export default function ProductModal({
                 <div className="col-sm-8">
                   <div className="form-group mb-2">
                     <label className="w-100" htmlFor="title">
-                      標題
+                      標題 <span className="text-danger">*</span>
                       <input
                         type="text"
                         id="title"
@@ -194,7 +154,7 @@ export default function ProductModal({
                   <div className="row">
                     <div className="form-group mb-2 col-md-6">
                       <label className="w-100" htmlFor="category">
-                        分類
+                        分類 <span className="text-danger">*</span>
                         <input
                           type="text"
                           id="category"
@@ -232,13 +192,13 @@ export default function ProductModal({
                           placeholder="請輸入原價"
                           className="form-control"
                           onChange={handleChange}
-                          value={tempData.origin_price}
+                          value={tempData.origin_price.toLocaleString()}
                         />
                       </label>
                     </div>
                     <div className="form-group mb-2 col-md-6">
                       <label className="w-100" htmlFor="price">
-                        售價
+                        售價 <span className="text-danger">*</span>
                         <input
                           type="number"
                           id="price"
@@ -246,7 +206,7 @@ export default function ProductModal({
                           placeholder="請輸入售價"
                           className="form-control"
                           onChange={handleChange}
-                          value={tempData.price}
+                          value={tempData.price.toLocaleString()}
                         />
                       </label>
                     </div>
@@ -254,7 +214,7 @@ export default function ProductModal({
                   <hr />
                   <div className="form-group mb-2">
                     <label className="w-100" htmlFor="weight">
-                      產品重量
+                      產品重量 <span className="text-danger">*</span>
                       <textarea
                         type="text"
                         id="weight"
@@ -268,7 +228,7 @@ export default function ProductModal({
                   </div>
                   <div className="form-group mb-2">
                     <label className="w-100" htmlFor="allergin">
-                      過敏原資料
+                      過敏原資料 <span className="text-danger">*</span>
                       <textarea
                         type="text"
                         id="allergin"
@@ -282,7 +242,7 @@ export default function ProductModal({
                   </div>
                   <div className="form-group mb-2">
                     <label className="w-100" htmlFor="content">
-                      說明內容
+                      說明內容 <span className="text-danger">*</span>
                       <textarea
                         type="text"
                         id="content"
@@ -300,7 +260,7 @@ export default function ProductModal({
                         className="w-100 form-check-label"
                         htmlFor="is_enabled"
                       >
-                        是否啟用
+                        是否啟用 <span className="text-danger">*</span>
                         <input
                           type="checkbox"
                           id="is_enabled"
@@ -330,7 +290,9 @@ export default function ProductModal({
               <button
                 type="button"
                 className="btn btn-primary"
-                onClick={submit}
+                onClick={() => {
+                  onSubmit(tempData);
+                }}
               >
                 儲存
               </button>

@@ -5,11 +5,11 @@ import Progress from "../../components/Progress";
 import { OrderContext } from "../../store/messageStore";
 import { useContext, useEffect } from "react";
 
+const currentStep = 2;
+const width = "25%";
+
 export default function Checkout() {
   const { cartData, stepItems, shippingFee } = useOutletContext();
-  console.log(cartData);
-  const currentStep = 2;
-  const width = "40%";
 
   const { setOrderInfo } = useContext(OrderContext); // 使用 setOrderInfo 暫存表單資料
   const navigate = useNavigate();
@@ -59,13 +59,13 @@ export default function Checkout() {
               width={width}
             />
           </div>
-          <div className="row justify-content-center flex-md-row flex-column-reverse bg-light pt-3">
+          <div className="row justify-content-center flex-md-row flex-column-reverse bg-light py-5 mb-5">
             <form
               className="col-md-6"
               onSubmit={handleSubmit(handleCheckoutSubmit)}
             >
-              <div className="bg-white p-3">
-                <h4 className="fw-bold">外送資料</h4>
+              <div className="bg-white p-4">
+                <h4 className="fw-bold mb-4">外送資料</h4>
 
                 <div className="mb-2">
                   <Input
@@ -155,16 +155,16 @@ export default function Checkout() {
                 </div>
               </div>
 
-              <div className="d-flex flex-column-reverse flex-md-row my-4 justify-content-between align-items-md-center align-items-end w-100">
+              <div className="d-flex my-4 justify-content-between align-items-md-center w-100">
                 <Link
                   to="/products"
-                  className="link-dark mt-md-0 mt-3 text-decoration-none"
+                  className="link-dark mt-md-0 mt-3 text-decoration-none fw-bold fs-5"
                 >
                   <i className="bi bi-caret-left-fill"></i> 繼續點餐
                 </Link>
                 <button
                   type="submit"
-                  className="btn btn-dark py-3 px-7 rounded-0"
+                  className="btn btn-pink py-3 px-5 rounded-0 fs-5"
                 >
                   前往結帳
                 </button>
@@ -193,9 +193,13 @@ export default function Checkout() {
                       </div>
                       <div className="d-flex justify-content-between">
                         <p className="text-muted mb-0">
-                          <small>NT$ {item.product.price}</small>
+                          <small>
+                            NT$ {item.product.price.toLocaleString()}
+                          </small>
                         </p>
-                        <p className="mb-0">NT$ {item.total}</p>
+                        <p className="mb-0">
+                          NT$ {item.total.toLocaleString()}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -210,7 +214,7 @@ export default function Checkout() {
                         小計
                       </th>
                       <td className="text-end border-0 px-0 pt-0">
-                        NT$ {cartData.total}
+                        NT$ {cartData.total.toLocaleString()}
                       </td>
                     </tr>
                     <tr
@@ -227,7 +231,7 @@ export default function Checkout() {
                         折抵後金額<span className="text-success">(已折抵)</span>
                       </th>
                       <td className="text-end border-0 px-0 pt-3 text-success">
-                        NT$ {cartData.final_total}
+                        NT$ {cartData.final_total.toLocaleString()}
                       </td>
                     </tr>
                     <tr>
@@ -238,7 +242,7 @@ export default function Checkout() {
                         宅配運費
                       </th>
                       <td className="text-end border-0 px-0 pt-0">
-                        NT$ {shippingFee}
+                        NT$ {shippingFee.toLocaleString()}
                       </td>
                     </tr>
                   </tbody>
@@ -246,7 +250,7 @@ export default function Checkout() {
                 <div className="d-flex justify-content-between mt-3">
                   <p className="mb-0 h4 fw-bold">總金額</p>
                   <p className="mb-0 h4 fw-bold">
-                    NT$ {cartData.final_total + shippingFee}
+                    NT$ {(cartData.final_total + shippingFee).toLocaleString()}
                   </p>
                 </div>
               </div>

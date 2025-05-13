@@ -1,86 +1,47 @@
 import Aos from "aos";
 import "aos/dist/aos.css";
-import { useEffect, useContext } from "react";
+import { useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade, Navigation } from "swiper/modules";
 import { Link, useOutletContext } from "react-router-dom";
-import { useLoading } from "../../components/LoadingContext";
-import { CouponContext } from "../../components/CouponProvider";
+
 import DiscountModal from "../../components/DiscountModal";
 import pie from "../../assets/apple-pie.png";
 import "swiper/css";
 import "swiper/css/autoplay";
 import "swiper/css/effect-fade";
 import "swiper/css/navigation";
-import axios from "axios";
+
+const comments = [
+  {
+    avatar:
+      "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=1443&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    text: "喜歡義式提拉米蘇的人一定要試試看！酒味不會太濃也不會太淡，吃起來非常剛好～",
+  },
+  {
+    avatar:
+      "https://images.unsplash.com/photo-1519052537078-e6302a4968d4?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    text: "南瓜派真的很好吃！是經典的美式口味，感恩節必吃甜點。",
+  },
+  {
+    avatar:
+      "https://images.unsplash.com/photo-1511275539165-cc46b1ee89bf?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fGNhdHxlbnwwfDB8MHx8fDA%3D",
+    text: "很常吃派派工房的甜派，某次吃了他家肉派就回不去了！已經變成家中必備冷凍食品。",
+  },
+  {
+    avatar:
+      "https://images.unsplash.com/photo-1498100152307-ce63fd6c5424?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    text: "芋頭奶油派超療癒！綿密的口感和奶香太搭了～",
+  },
+  {
+    avatar:
+      "https://images.unsplash.com/photo-1472491235688-bdc81a63246e?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    text: "最近愛上檸檬塔，酸甜平衡得很好，超推薦！",
+  },
+];
 
 export default function Home() {
-  const comments = [
-    {
-      avatar:
-        "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=1443&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      text: "喜歡義式提拉米蘇的人一定要試試看！酒味不會太濃也不會太淡，吃起來非常剛好～",
-    },
-    {
-      avatar:
-        "https://images.unsplash.com/photo-1519052537078-e6302a4968d4?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      text: "南瓜派真的很好吃！是經典的美式口味，感恩節必吃甜點。",
-    },
-    {
-      avatar:
-        "https://images.unsplash.com/photo-1511275539165-cc46b1ee89bf?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fGNhdHxlbnwwfDB8MHx8fDA%3D",
-      text: "很常吃派派工房的甜派，某次吃了他家肉派就回不去了！已經變成家中必備冷凍食品。",
-    },
-    {
-      avatar:
-        "https://images.unsplash.com/photo-1498100152307-ce63fd6c5424?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      text: "芋頭奶油派超療癒！綿密的口感和奶香太搭了～",
-    },
-    {
-      avatar:
-        "https://images.unsplash.com/photo-1472491235688-bdc81a63246e?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      text: "最近愛上檸檬塔，酸甜平衡得很好，超推薦！",
-    },
-  ];
-
-  const { products, getCart } = useOutletContext();
-  // console.log("產品", products);
-
-  const { appliedCoupon } = useContext(CouponContext);
-  const { setIsLoading } = useLoading();
-
-  const addToCart = async (id) => {
-    const data = {
-      data: {
-        product_id: id,
-        qty: 1,
-      },
-    };
-    setIsLoading(true);
-    try {
-      await axios.post(
-        `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/cart`,
-        data
-      );
-      // console.log("加入購物車成功");
-
-      await getCart(); // 第一次更新購物車
-
-      if (appliedCoupon) {
-        await axios.post(
-          `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/coupon`,
-          {
-            data: { code: appliedCoupon },
-          }
-        );
-        // console.log("自動重新套用優惠碼成功");
-        await getCart(); // 第二次更新購物車（拿到 final_total）
-      }
-    } catch (error) {
-      console.error("加入購物車或套用優惠碼失敗", error);
-    }
-    setIsLoading(false);
-  };
+  const { products, addToCart } = useOutletContext();
 
   useEffect(() => {
     Aos.init({
@@ -334,7 +295,7 @@ export default function Home() {
                           {product?.title}
                         </h4>
                         <p className="text-pink fs-s-20 fw-bold mb-2">
-                          NT$ {product?.price}
+                          NT$ {product?.price.toLocaleString()}
                         </p>
                         <button
                           type="button"

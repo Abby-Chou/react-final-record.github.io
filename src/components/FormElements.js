@@ -107,7 +107,6 @@ export const InputExp = ({
     // 僅允許數字 & 最多兩位
     const value = e.target.value.replace(/\D/g, "").slice(0, 2);
     e.target.value = value;
-    console.log(e.target.value);
   };
 
   const handleBlur = async (e) => {

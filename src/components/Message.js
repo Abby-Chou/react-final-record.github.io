@@ -2,8 +2,6 @@ import { useContext } from "react";
 import { MessageContext } from "../store/messageStore";
 
 export default function Message() {
-  //   const [message, setMessage] = useState({});
-
   const [message] = useContext(MessageContext);
 
   return (

@@ -217,6 +217,7 @@ $utilities: map-merge(
         class: w,
         values: (
           25: 25%,
+          35: 35%,
           50: 50%,
           75: 75%,
           100: 100%,
@@ -228,8 +229,11 @@ $utilities: map-merge(
       property: width,
       class: w-s,
       values: (
+        150: 150px,
         200: 200px,
+        250: 250px,
         350: 350px,
+        400: 400px,
         500: 500px,
       ),
     ),

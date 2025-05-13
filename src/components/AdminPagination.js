@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+// 因為 admin API 有些沒有全部的資料, 而是只有分頁資料, 因此另做一個 AdminPagination
 
 export default function AdminPagination({ pagination, changePage }) {
   return (
@@ -10,7 +10,7 @@ export default function AdminPagination({ pagination, changePage }) {
           <li className="list-inline-item">
             <a
               className={`page-link ${pagination.has_pre ? "" : "disabled"}`}
-              href="/"
+              href="#"
               aria-label="Previous"
               onClick={(e) => {
                 e.preventDefault();
@@ -28,6 +28,10 @@ export default function AdminPagination({ pagination, changePage }) {
                     i + 1 === pagination.current_page && "active"
                   }`}
                   href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    changePage(i + 1);
+                  }}
                 >
                   {i + 1}
                 </a>
@@ -38,7 +42,7 @@ export default function AdminPagination({ pagination, changePage }) {
           <li className="list-inline-item">
             <a
               className={`page-link ${pagination.has_next ? "" : "disabled"}`}
-              href="/"
+              href="#"
               aria-label="Next"
               onClick={(e) => {
                 e.preventDefault();

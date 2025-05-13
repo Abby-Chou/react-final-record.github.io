@@ -5,10 +5,14 @@ import Progress from "../../components/Progress";
 import { CouponContext } from "../../components/CouponProvider";
 import { useLoading } from "../../components/LoadingContext";
 
+const currentStep = 1;
+const width = "0%";
+
 export default function Cart() {
   const { stepItems, getCart, cartData, shippingFee } = useOutletContext();
-  const [codeData, setCodeData] = useState("");
+
   const [loadingItems, setLoadingItems] = useState([]);
+  const [noCoupon, setNoCoupon] = useState(false);
 
   const { appliedCoupon, setAppliedCoupon } = useContext(CouponContext);
   const { setIsLoading } = useLoading();
@@ -18,34 +22,29 @@ export default function Cart() {
     await getCart(); // 更新購物車
 
     if (appliedCoupon) {
-      try {
-        await axios.post(
-          `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/coupon`,
-          {
-            data: { code: appliedCoupon },
-          }
-        );
-        // console.log("自動重新套用優惠碼成功");
-        await getCart(); // 再次拿回有折扣的 final_total
-      } catch (error) {
-        console.log("自動套用優惠碼失敗", error);
-      }
+      await axios.post(
+        `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/coupon`,
+        {
+          data: { code: appliedCoupon },
+        }
+      );
+
+      await getCart(); // 再次拿回有折扣的 final_total
     }
   };
 
+  // 操作 API 刪除內容
   const removeCartItem = async (id) => {
     setIsLoading(true);
-    try {
-      await axios.delete(
-        `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/cart/${id}`
-      );
-      getCartAndReapplyCoupon();
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
+
+    await axios.delete(
+      `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/cart/${id}`
+    );
+    getCartAndReapplyCoupon();
+    setIsLoading(false);
   };
 
+  // 操作 API 更新數量
   const updateCartItem = async (item, quantity) => {
     setIsLoading(true);
     const data = {
@@ -55,40 +54,34 @@ export default function Cart() {
       },
     };
     setLoadingItems([...loadingItems, item.id]);
-    try {
-      await axios.put(
-        `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/cart/${item.id}`,
-        data
-      );
-      setLoadingItems((prev) => prev.filter((id) => id !== item.id));
-      getCartAndReapplyCoupon();
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
+
+    await axios.put(
+      `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/cart/${item.id}`,
+      data
+    );
+    setLoadingItems((prev) => prev.filter((id) => id !== item.id));
+    getCartAndReapplyCoupon();
+    setIsLoading(false);
   };
 
+  // 套用折扣
   const getCoupon = async () => {
+    if (!appliedCoupon) return;
     setIsLoading(true);
-    const data = {
-      data: { code: codeData },
-    };
-    try {
-      await axios.post(
-        `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/coupon`,
-        data
-      );
-      // console.log("套用優惠碼成功");
-      setAppliedCoupon(codeData); // 儲存優惠碼到 context
-      getCartAndReapplyCoupon();
-      setIsLoading(false);
-    } catch (error) {
-      console.log("套用優惠碼失敗", error);
-    }
-  };
+    const res = await axios.post(
+      `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/coupon`,
+      { data: { code: appliedCoupon } }
+    );
 
-  const currentStep = 1;
-  const width = "12%";
+    if (res.data.success) {
+      getCartAndReapplyCoupon();
+    } else {
+      setNoCoupon(true);
+      setTimeout(() => setNoCoupon(false), 5000);
+    }
+
+    setIsLoading(false);
+  };
 
   return (
     <div className="container px-4">
@@ -140,14 +133,16 @@ export default function Cart() {
                         }
                         disabled={loadingItems.includes(item.id)}
                       >
-                        {[...Array(20)].map((_, num) => (
+                        {[...Array(10)].map((_, num) => (
                           <option value={num + 1} key={num}>
                             {num + 1}
                           </option>
                         ))}
                       </select>
                     </div>
-                    <p className="mb-0 ms-auto">NT$ {item.total}</p>
+                    <p className="mb-0 ms-auto">
+                      NT$ {item?.total?.toLocaleString()}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -180,23 +175,34 @@ export default function Cart() {
                       小計
                     </th>
                     <td className="text-end border-0 px-0 pt-0">
-                      NT$ {cartData.total}
+                      NT$ {cartData?.total?.toLocaleString()}
                     </td>
                   </tr>
                   <tr>
                     <th className="border-0 px-0 pt-3 font-weight-normal">
-                      <label htmlFor="code">折扣碼</label>
+                      <label htmlFor="code">
+                        折扣碼
+                        <span
+                          className={`text-danger ms-2 ${
+                            noCoupon ? "d-inline-block" : "d-none"
+                          }`}
+                        >
+                          ( 找不到優惠券! )
+                        </span>
+                      </label>
                     </th>
                     <td className="text-end border-0 px-0 pt-3">
                       <input
                         type="text"
                         id="code"
-                        className="text-end w-25 me-3 align-middle"
-                        onChange={(e) => setCodeData(e.target.value)}
+                        className="w-s-150 me-3 align-middle"
+                        placeholder="請輸入折扣碼"
+                        value={appliedCoupon || ""}
+                        onChange={(e) => setAppliedCoupon(e.target.value)}
                       />
                       <button
                         type="button"
-                        className="btn btn-dark rounded-0"
+                        className="btn btn-pink rounded-0"
                         onClick={getCoupon}
                       >
                         取得折扣
@@ -217,7 +223,7 @@ export default function Cart() {
                       </span>
                     </th>
                     <td className="text-end border-0 px-0 pt-0 text-success">
-                      NT$ {cartData.final_total}
+                      NT$ {cartData?.final_total?.toLocaleString()}
                     </td>
                   </tr>
                   <tr>
@@ -225,7 +231,7 @@ export default function Cart() {
                       宅配運費
                     </th>
                     <td className="text-end border-0 px-0 pt-0">
-                      NT$ {shippingFee}
+                      NT$ {shippingFee?.toLocaleString()}
                     </td>
                   </tr>
                 </tbody>
@@ -233,12 +239,12 @@ export default function Cart() {
               <div className="d-flex justify-content-between mt-3">
                 <p className="mb-0 h4 fw-bold">總金額</p>
                 <p className="mb-0 h4 fw-bold">
-                  NT$ {cartData.final_total + shippingFee}
+                  NT$ {(cartData?.final_total + shippingFee)?.toLocaleString()}
                 </p>
               </div>
               <Link
                 to="/checkout"
-                className="btn btn-dark w-100 btn-block mt-4 mb-5 rounded-0 py-3"
+                className="btn btn-pink w-100 btn-block mt-4 mb-5 rounded-0 py-3"
               >
                 確認餐點正確
               </Link>

@@ -1,47 +1,27 @@
-import { useState, useEffect, useContext } from "react";
+import { useEffect, useContext } from "react";
 import Pagination from "../../components/Pagination";
 import { useOutletContext, useLocation } from "react-router-dom";
 import ProductCard from "../../components/ProductCard";
 import SearchBar from "../../components/SearchBar";
 import { SearchContext } from "../../components/SearchProvider";
+import usePagination from "../../components/usePagination";
 
 export default function AllKindsProducts() {
   const location = useLocation();
-  const { products, getCart } = useOutletContext();
+  const { products, addToCart } = useOutletContext();
   const { search, setSearch, appliedSearch, setAppliedSearch } =
     useContext(SearchContext);
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
 
   const filteredProducts = products.filter((product) =>
     product.title.toLowerCase().includes(appliedSearch.toLowerCase())
   );
 
-  console.log(filteredProducts);
-  // 分頁計算
-  const indexOfLast = currentPage * itemsPerPage;
-  const indexOfFirst = indexOfLast - itemsPerPage;
-  const currentProducts = filteredProducts.slice(indexOfFirst, indexOfLast);
-  // const totalPages = Math.ceil(cakeProducts.length / itemsPerPage);
-
-  const handleInput = (e) => {
-    const { code, key } = e;
-    if (code === "Enter" || key === "Enter") {
-      handleSearch();
-    } else {
-      setSearch(e.target.value);
-    }
-  };
-  const handleSearch = () => {
-    if (search.trim() !== "") {
-      setAppliedSearch(search); //  實際套用搜尋
-    }
-  };
-
-  useEffect(() => {
-    setCurrentPage(1); // 每次進入頁面時重設頁碼
-  }, [products]);
+  const {
+    currentItems: currentProducts,
+    currentPage,
+    setCurrentPage,
+    totalItems,
+  } = usePagination(filteredProducts, 6, [products]);
 
   useEffect(() => {
     // 如果不是從搜尋按鈕來的 → 清空搜尋欄位
@@ -54,15 +34,15 @@ export default function AllKindsProducts() {
   }, [location.state?.fromSearch, setSearch, setAppliedSearch]);
   return (
     <>
-      <div className="col-lg-9">
-        <div className="row gy-3">
+      <div className="col-md-9">
+        <div className="row row-cols-2 row-cols-lg-3 gy-3">
           {currentProducts.length ? (
             currentProducts.map((product) => {
               return (
                 <ProductCard
                   product={product}
                   key={product.id}
-                  getCart={getCart}
+                  addToCart={addToCart}
                 />
               );
             })
@@ -89,10 +69,10 @@ export default function AllKindsProducts() {
             </div>
           )}
         </div>
-        <div className="d-flex justify-content-end mt-3">
+        <div className="d-flex justify-content-center mt-3">
           <Pagination
-            totalItems={filteredProducts.length}
-            itemsPerPage={itemsPerPage}
+            totalItems={totalItems}
+            itemsPerPage={6}
             currentPage={currentPage}
             changePage={setCurrentPage}
           />

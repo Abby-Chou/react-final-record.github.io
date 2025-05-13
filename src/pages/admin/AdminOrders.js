@@ -1,10 +1,15 @@
-import { useEffect, useRef, useState, useMemo, useCallback } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import axios from "axios";
 import OrderModal from "../../components/OrderModal";
 import { Modal } from "bootstrap";
 import DeleteOrderModal from "../../components/DeleteOrderModal";
 import AdminPagination from "../../components/AdminPagination";
 import { useLoading } from "../../components/LoadingContext";
+import {
+  MessageContext,
+  handleSuccessMessage,
+  handleFailMessage,
+} from "../../store/messageStore";
 
 export default function AdminOrders() {
   const [orders, setOrders] = useState([]);
@@ -15,6 +20,7 @@ export default function AdminOrders() {
 
   const [sortOrder, setSortOrder] = useState("asc"); // asc: 近到遠, desc: 遠到近
   const [copied, setCopied] = useState(false);
+  const [, dispatch] = useContext(MessageContext);
 
   const orderModal = useRef(null);
   const deleteOrderModal = useRef(null);
@@ -23,32 +29,24 @@ export default function AdminOrders() {
     new Date().getMonth() + 1
   ).toString()}月`;
 
-  const getOrders = useCallback(
-    async (page = 1) => {
-      setIsLoading(true);
-      const productRes = await axios.get(
-        `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/orders?page=${page}`
-      );
-      // console.log("Orders", productRes);
-      setOrders(productRes.data.orders);
-      setPagination(productRes.data.pagination);
-      setIsLoading(false);
-    },
-    [setIsLoading]
-  );
+  const getOrders = async (page = 1) => {
+    setIsLoading(true);
+    const productRes = await axios.get(
+      `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/orders?page=${page}`
+    );
 
-  const sortedOrders = useMemo(() => {
-    const ordersCopy = [...orders];
-    return ordersCopy.sort((a, b) => {
-      const dateA = a.user?.wishDate || "";
-      const dateB = b.user?.wishDate || "";
-      if (sortOrder === "asc") {
-        return dateA.localeCompare(dateB); // 近到遠
-      } else {
-        return dateB.localeCompare(dateA); // 遠到近
-      }
-    });
-  }, [orders, sortOrder]);
+    setOrders(productRes?.data?.orders);
+    setPagination(productRes?.data?.pagination);
+    setIsLoading(false);
+  };
+
+  const sortedOrders = [...orders].sort((a, b) => {
+    const dateA = a.user?.wishDate || "";
+    const dateB = b.user?.wishDate || "";
+    return sortOrder === "asc"
+      ? dateA.localeCompare(dateB)
+      : dateB.localeCompare(dateA);
+  });
 
   const openOrderModal = (openOrder) => {
     setTempOrder(openOrder);
@@ -72,19 +70,34 @@ export default function AdminOrders() {
 
   const deleteOrder = async (id) => {
     setIsLoading(true);
-    try {
-      const res = await axios.delete(
-        `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/order/${id}`
-      );
-      // console.log(res);
-      if (res.data.success) {
-        getOrders();
-        closeDeleteModal();
-      }
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
+
+    const res = await axios.delete(
+      `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/order/${id}`
+    );
+
+    if (res.data.success) {
+      getOrders();
+      closeDeleteModal();
     }
+    setIsLoading(false);
+  };
+
+  const handleSubmit = async (data) => {
+    const res = await axios.put(
+      `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/order/${tempOrder.id}`,
+      {
+        data: data,
+      }
+    );
+
+    if (res.data.success) {
+      handleSuccessMessage(dispatch, res);
+    } else {
+      handleFailMessage(dispatch, res);
+    }
+
+    closeOrderModal(); // 關掉 Modal
+    getOrders(); // 重新發出 API request
   };
 
   useEffect(() => {
@@ -97,7 +110,7 @@ export default function AdminOrders() {
     });
 
     getOrders();
-  }, [getOrders]);
+  }, []);
   return (
     <>
       <div className="p-3">
@@ -105,6 +118,7 @@ export default function AdminOrders() {
           closeOrderModal={closeOrderModal}
           getOrders={getOrders}
           tempOrder={tempOrder}
+          onSubmit={handleSubmit}
         />
         <DeleteOrderModal
           closeDeleteModal={closeDeleteModal}
@@ -174,7 +188,7 @@ export default function AdminOrders() {
                         setCopied(true);
                         setTimeout(() => setCopied(false), 2000);
                       }}
-                      className="btn btn-link p-0 me-1 text-decoration-none"
+                      className="btn btn-link p-0 me-1 mt-n2 text-decoration-none"
                       title="複製訂單編號"
                     >
                       <i className="bi bi-copy text-pink"></i>
@@ -182,7 +196,7 @@ export default function AdminOrders() {
                     {order.id}{" "}
                   </td>
                   <td style={{ width: "175px" }}>
-                    {Object.values(order.products).map((item) => {
+                    {Object.values(order?.products).map((item) => {
                       return (
                         <ul key={item.id} className="list-unstyled">
                           <li>{item.product.title}</li>
@@ -191,7 +205,7 @@ export default function AdminOrders() {
                     })}
                   </td>
                   <td>
-                    {Object.values(order.products).map((item) => {
+                    {Object.values(order?.products).map((item) => {
                       return (
                         <ul key={item.id} className="list-unstyled">
                           <li>x{item.qty}</li>
@@ -199,7 +213,9 @@ export default function AdminOrders() {
                       );
                     })}
                   </td>
-                  <td>{order.message}</td>
+                  <td className={order?.message === "未發貨" ? "text-red" : ""}>
+                    {order.message}
+                  </td>
                   <td>{order.user.wishDate}</td>
                   <td>
                     <button

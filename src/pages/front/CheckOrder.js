@@ -8,14 +8,14 @@ export default function CheckOrder() {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
   const { setIsLoading } = useLoading();
-  //-ON4Qrk5BERJRf8pzG1Y
+
   const getOrderDetail = async (orderId) => {
     setIsLoading(true);
     try {
       const orderDetailRes = await axios.get(
         `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/order/${orderId}`
       );
-      // console.log(orderDetailRes);
+
       const order = orderDetailRes.data.order;
       const productsDetail = Object.values(order.products || {});
       setOrderDetail(order);
@@ -23,7 +23,6 @@ export default function CheckOrder() {
       setIsLoading(false);
       setError(false);
     } catch (error) {
-      // console.error("取得訂單失敗", error);
       setIsLoading(false);
       setError(true);
       setOrderDetail({});
@@ -36,7 +35,7 @@ export default function CheckOrder() {
         className="min-vh-100"
         style={{
           backgroundImage:
-            "url(https://plus.unsplash.com/premium_photo-1676757202363-30c86ba53343?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)",
+            "url(https://images.unsplash.com/photo-1561160726-832f3b8fc718?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)",
           objectFit: "cover",
           backgroundPosition: "center",
           backgroundAttachment: "fixed",
@@ -50,7 +49,7 @@ export default function CheckOrder() {
         </div>
         <div className="container mt-lg-2">
           <div className="d-flex justify-content-center">
-            <form className="input-group w-s-lg-500 w-s-350">
+            <form className="input-group w-s-lg-500 w-s-400">
               <input
                 className="form-control form-control-lg"
                 type="text"
@@ -78,32 +77,40 @@ export default function CheckOrder() {
                     {orderDetail?.id}
                   </li>
                   <li className="d-flex">
-                    <div className="me-2 fw-bold">訂購餐點 : </div>
+                    <div className="me-2 fw-bold text-nowrap">訂購餐點 : </div>
                     <div>
                       {products.map((item) => {
                         return (
-                          <span className="me-2" key={item.id}>
+                          <div className="me-2" key={item.id}>
                             {item?.product?.title} x {item?.qty}
-                          </span>
+                          </div>
                         );
                       })}
                     </div>
                   </li>
                   <li className="d-flex">
                     <div className="me-2 fw-bold">訂單金額 : </div>
-                    <div> NT$ {orderDetail?.total}</div>
+                    <div> NT$ {orderDetail?.total.toLocaleString()}</div>
                   </li>
                   <li className="d-flex">
-                    <div className="me-2 fw-bold">訂購人 : </div>
-                    <div> {orderDetail?.user?.name}</div>
+                    <div className="me-4 fw-bold">訂購人 :</div>
+                    <div>{orderDetail?.user?.name}</div>
                   </li>
                   <li className="d-flex">
-                    <div className="me-2 fw-bold">訂購人信箱 : </div>
-                    <div> {orderDetail?.user?.email}</div>
+                    <div className="me-2 fw-bold text-nowrap">
+                      訂購人信箱 :{" "}
+                    </div>
+                    <div className="text-break">
+                      {" "}
+                      {orderDetail?.user?.email}
+                    </div>
                   </li>
                   <li className="d-flex">
                     <div className="me-2 fw-bold">送貨地址 : </div>
-                    <div> {orderDetail?.user?.address}</div>
+                    <div className="text-break">
+                      {" "}
+                      {orderDetail?.user?.address}
+                    </div>
                   </li>
                   <li className="d-flex">
                     <div className="me-2 fw-bold">希望送貨日 : </div>

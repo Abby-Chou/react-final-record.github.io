@@ -1,29 +1,26 @@
-import { useState, useEffect } from "react";
-
 import { useOutletContext } from "react-router-dom";
 import ProductCard from "../../components/ProductCard";
 import Pagination from "../../components/Pagination";
+import usePagination from "../../components/usePagination";
 
 export default function Doughnuts() {
   const { products, getCart } = useOutletContext();
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
-  const cakeProducts = products.filter((item) => item.category === "doughnuts");
 
-  // 分頁計算
-  const indexOfLast = currentPage * itemsPerPage;
-  const indexOfFirst = indexOfLast - itemsPerPage;
-  const currentProducts = cakeProducts.slice(indexOfFirst, indexOfLast);
-  // const totalPages = Math.ceil(cakeProducts.length / itemsPerPage);
+  const doughnutsProducts = products.filter(
+    (item) => item.category === "doughnuts"
+  );
 
-  useEffect(() => {
-    setCurrentPage(1); // 每次進入頁面時重設頁碼
-  }, [products]);
+  const {
+    currentItems: currentProducts,
+    currentPage,
+    setCurrentPage,
+    totalItems,
+  } = usePagination(doughnutsProducts, 6, [products]);
 
   return (
     <>
-      <div className="col-lg-9">
-        <div className="row gy-3">
+      <div className="col-md-9">
+        <div className="row row-cols-2 row-cols-lg-3 gy-3">
           {currentProducts.map((product) => {
             return (
               <ProductCard
@@ -34,10 +31,10 @@ export default function Doughnuts() {
             );
           })}
         </div>
-        <div className="d-flex justify-content-end mt-3">
+        <div className="d-flex justify-content-center mt-3">
           <Pagination
-            totalItems={cakeProducts.length}
-            itemsPerPage={itemsPerPage}
+            totalItems={totalItems}
+            itemsPerPage={6}
             currentPage={currentPage}
             changePage={setCurrentPage}
           />

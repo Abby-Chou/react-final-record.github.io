@@ -8,15 +8,17 @@ import { OrderContext } from "../../store/messageStore";
 import SuccessModal from "../../components/SuccessModal";
 import axios from "axios";
 
+const currentStep = 3;
+const width = "50%";
+
 export default function Payments() {
   const [messageData, setMessageData] = useState("");
   const successModal = useRef(null);
   const { cartData, stepItems } = useOutletContext();
-  const currentStep = 3;
-  const width = "65%";
+
   const navigate = useNavigate();
 
-  const { orderInfo, setOrderId, orderId } = useContext(OrderContext); // ✅ 取得配送資料 & 設定 orderId
+  const { orderInfo, setOrderId, orderId } = useContext(OrderContext); //  取得配送資料 & 設定 orderId
 
   const year = new Date().getFullYear(); // 2025
   const shortYear = year % 100;
@@ -49,7 +51,6 @@ export default function Payments() {
         orderData
       );
 
-      // console.log("成功建立訂單", orderRes);
       const orderId = orderRes?.data?.orderId;
       setOrderId(orderId); // 儲存 orderId 到 context
 
@@ -61,7 +62,6 @@ export default function Payments() {
       setMessageData(payRes.data);
       openSuccessModal();
     } catch (error) {
-      console.error("付款失敗", error);
       alert("付款失敗，請稍後再試！");
     }
   };
@@ -197,9 +197,9 @@ export default function Payments() {
                     }}
                   />
                 </div>
-                <div className="d-flex justify-content-end">
+                <div className="d-flex justify-content-end mt-2">
                   <button
-                    className="btn btn-dark py-3 px-7 my-3 rounded-0"
+                    className="btn btn-pink fs-5 py-3 px-5 my-3 rounded-0"
                     type="submit"
                   >
                     完成

@@ -1,8 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
-import axios from "axios";
 import {
-  Link,
   Outlet,
   useOutletContext,
   useLocation,
@@ -14,47 +11,27 @@ import doughnut from "../../assets/doughnut.png";
 import dessert from "../../assets/dessert.png";
 
 export default function Products() {
-  const [products, setProducts] = useState([]);
-  const { getCart } = useOutletContext();
+  const context = useOutletContext();
   const location = useLocation();
   const navigate = useNavigate();
 
-  const getAllProducts = async () => {
-    const allProductRes = await axios.get(
-      `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/products/all`
-    );
-    // console.log(allProductRes);
-    setProducts(allProductRes.data.products);
-  };
-
-  useEffect(() => {
-    getAllProducts();
-  }, []);
-
-  useEffect(() => {
-    // 把所有展開的 collapse 區塊收起來（移除 show class）
-    const opened = document.querySelectorAll(".collapse.show");
-    opened.forEach((el) => {
-      el.classList.remove("show");
-    });
-  }, [location]);
   return (
     <>
-      <div className="container mt-5 mb-7">
-        <div className="row gy-2 gx-4">
-          <div className="col-lg-3 d-flex justify-content-center">
+      <div className="container mt-4 mb-7">
+        <div className="row g-4">
+          <div className="col-md-3 d-flex justify-content-center">
             <ul className="text-secondary list-group list-group-flush">
+              <a href=""></a>
               <li
-                className={`list-group-item d-flex justify-content-center product-list-item ${
+                className={`list-group-item d-flex justify-content-center product-list-item  ${
                   location.pathname.includes("/products/allProducts")
                     ? "active"
                     : ""
                 }`}
-                style={{ width: "250px" }}
               >
                 <div>
                   <a
-                    className="text-decoration-none link-secondary fs-5 d-flex"
+                    className="text-decoration-none link-secondary fs-5 d-flex stretched-link"
                     onClick={() => {
                       navigate("/products/allProducts");
                     }}
@@ -71,13 +48,13 @@ export default function Products() {
                 </div>
               </li>
               <li
-                className={`list-group-item d-flex justify-content-center product-list-item ${
+                className={`list-group-item d-flex justify-content-center product-list-item  ${
                   location.pathname.includes("/products/cakes") ? "active" : ""
                 }`}
               >
                 <div>
                   <a
-                    className="text-decoration-none link-secondary fs-5 d-flex"
+                    className="text-decoration-none link-secondary fs-5 d-flex stretched-link"
                     onClick={() => {
                       navigate("/products/cakes");
                     }}
@@ -95,13 +72,13 @@ export default function Products() {
               </li>
 
               <li
-                className={`list-group-item d-flex justify-content-center product-list-item ${
+                className={`list-group-item d-flex justify-content-center product-list-item  ${
                   location.pathname.includes("/products/pies") ? "active" : ""
                 }`}
               >
                 <div>
                   <a
-                    className="text-decoration-none link-secondary fs-5 d-flex"
+                    className="text-decoration-none link-secondary fs-5 d-flex stretched-link"
                     role="button"
                     onClick={() => {
                       navigate("/products/pies");
@@ -119,7 +96,7 @@ export default function Products() {
               </li>
 
               <li
-                className={`list-group-item d-flex justify-content-center product-list-item ${
+                className={`list-group-item d-flex justify-content-center product-list-item  ${
                   location.pathname.includes("/products/doughnuts")
                     ? "active"
                     : ""
@@ -127,7 +104,7 @@ export default function Products() {
               >
                 <div>
                   <a
-                    className="text-decoration-none link-secondary fs-5"
+                    className="text-decoration-none link-secondary fs-5 stretched-link"
                     role="button"
                     onClick={() => {
                       navigate("/products/doughnuts");
@@ -137,7 +114,7 @@ export default function Products() {
                       src={doughnut}
                       alt=""
                       style={{ height: "20px", width: "20px" }}
-                      className="me-2"
+                      className="mt-n1 me-2"
                     />
                     甜甜圈類
                   </a>
@@ -146,7 +123,7 @@ export default function Products() {
             </ul>
           </div>
 
-          <Outlet context={{ products, getCart }} />
+          <Outlet context={context} />
         </div>
       </div>
     </>

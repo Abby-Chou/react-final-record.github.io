@@ -35,7 +35,7 @@ export default function SearchBar({
         placeholder="請輸入產品名"
         autoFocus={autoFocus}
       />
-      <button className="btn btn-danger" onClick={handleSearch}>
+      <button className="btn btn-pink" onClick={handleSearch}>
         搜尋
       </button>
     </div>
