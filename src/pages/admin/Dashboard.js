@@ -32,7 +32,7 @@ export default function Dashboard() {
   useEffect(() => {
     if (!token) {
       // 沒有 token 就回登入頁面
-      navigate("/login");
+      navigate("/adminLogin");
     } else {
       // 有 token 就確認 user check
       (async () => {
@@ -40,7 +40,7 @@ export default function Dashboard() {
           `${process.env.REACT_APP_API_URL}/v2/api/user/check`
         );
         if (!checkRes.data.success) {
-          navigate("/login");
+          navigate("/adminLogin");
         }
       })();
     }

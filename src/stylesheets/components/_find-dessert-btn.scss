@@ -1,0 +1,24 @@
+.find-dessert-btn {
+  position: absolute;
+  top: 50%;
+  right: 1.5rem;
+  transform: translateY(-50%);
+  writing-mode: vertical-rl;
+  background-color: #f8d57e;
+  color: #5c3a1d;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px 8px 0 0;
+  font-weight: bold;
+  font-size: 0.9rem;
+  border: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.find-dessert-btn:hover {
+  background-color: #f1c453;
+  color: #3e2a13;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+}

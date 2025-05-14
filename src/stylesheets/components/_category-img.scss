@@ -1,0 +1,7 @@
+.category-img {
+  transition: transform 0.3s ease;
+}
+
+.category-img:hover {
+  transform: scale(1.15);
+}

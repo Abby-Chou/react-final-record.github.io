@@ -96,7 +96,7 @@ export default function Cart() {
             width={width}
           />
           <div className="px-2">
-            <h2 className="mb-3">購物車</h2>
+            <h2 className="mb-4">購物車</h2>
 
             {cartData?.carts?.map((item) => (
               <div className="d-flex mt-2 bg-light" key={item.id}>
@@ -168,7 +168,7 @@ export default function Cart() {
                 cartData?.carts?.length === 0 ? "d-none" : "d-block"
               }`}
             >
-              <table className="table mt-3 text-muted">
+              <table className="table mt-4 text-muted">
                 <tbody>
                   <tr>
                     <th className="border-0 px-0 pt-0 font-weight-normal">
@@ -192,21 +192,32 @@ export default function Cart() {
                       </label>
                     </th>
                     <td className="text-end border-0 px-0 pt-3">
-                      <input
-                        type="text"
-                        id="code"
-                        className="w-s-150 me-3 align-middle"
-                        placeholder="請輸入折扣碼"
-                        value={appliedCoupon || ""}
-                        onChange={(e) => setAppliedCoupon(e.target.value)}
-                      />
-                      <button
-                        type="button"
-                        className="btn btn-pink rounded-0"
-                        onClick={getCoupon}
+                      <div
+                        className="d-flex justify-content-end align-items-center"
+                        style={{ overflow: "auto" }}
                       >
-                        取得折扣
-                      </button>
+                        <input
+                          type="text"
+                          id="code"
+                          className="form-control"
+                          style={{
+                            width: "200px",
+                            flex: "0 0 auto",
+                            marginRight: "12px",
+                          }}
+                          placeholder="請輸入折扣碼"
+                          value={appliedCoupon || ""}
+                          onChange={(e) => setAppliedCoupon(e.target.value)}
+                        />
+                        <button
+                          type="button"
+                          className="btn btn-pink rounded-0"
+                          onClick={getCoupon}
+                          style={{ whiteSpace: "nowrap", flex: "0 0 auto" }}
+                        >
+                          取得折扣
+                        </button>
+                      </div>
                     </td>
                   </tr>
                   <tr
@@ -244,7 +255,7 @@ export default function Cart() {
               </div>
               <Link
                 to="/checkout"
-                className="btn btn-pink w-100 btn-block mt-4 mb-5 rounded-0 py-3"
+                className="btn btn-pink w-100 btn-block my-5 rounded-0 py-3"
               >
                 確認餐點正確
               </Link>

@@ -46,7 +46,7 @@ export default function Progress({ stepItems, currentStep, width }) {
                   {item.step}
                 </button>
                 <span
-                  className={`mt-1 small ${
+                  className={`mt-1 small text-nowrap ${
                     item.step <= currentStep ? "" : "text-muted"
                   }`}
                 >

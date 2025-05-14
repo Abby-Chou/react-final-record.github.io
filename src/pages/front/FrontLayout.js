@@ -30,7 +30,7 @@ export default function FrontLayout() {
       `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/cart`
     );
     setCartData(res.data.data);
-    console.log(res);
+
     setShippingFee(100 * res.data.data.carts.length);
 
     setIsLoading(false);
