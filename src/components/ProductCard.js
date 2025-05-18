@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 export default function ProductCard({ product, addToCart }) {
+  console.log(product);
   return (
     <>
       <div className="col" key={product.id}>
@@ -8,7 +9,7 @@ export default function ProductCard({ product, addToCart }) {
           <div className="card-img-wrapper position-relative overflow-hidden">
             <Link to={`/product/${product.id}`}>
               <img
-                src={product.imageUrl}
+                src={product.imageUrl[0]}
                 className="card-img-top rounded-0 product-card-img"
                 alt="..."
               />

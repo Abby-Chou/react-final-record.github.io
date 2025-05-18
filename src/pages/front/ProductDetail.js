@@ -14,6 +14,7 @@ import { Autoplay } from "swiper/modules";
 
 export default function ProductDetail() {
   const [singleProduct, setSingleProduct] = useState({});
+  const [mainImage, setMainImage] = useState("");
 
   const [categoryTitle, setCategoryTitle] = useState("");
   const [theseProducts, setTheseProducts] = useState([]);
@@ -30,7 +31,10 @@ export default function ProductDetail() {
         `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/product/${id}`
       );
 
-      setSingleProduct(productRes.data.product);
+      const product = productRes.data.product;
+      setSingleProduct(product);
+      setMainImage(product.imageUrl[0]);
+
       const category = productRes.data.product.category;
       if (category === "cakes") {
         setCategoryTitle("經典蛋糕");
@@ -39,6 +43,7 @@ export default function ProductDetail() {
       } else {
         setCategoryTitle("甜甜圈類");
       }
+
       setIsLoading(false);
     };
 
@@ -90,10 +95,33 @@ export default function ProductDetail() {
         <div className="col-md-6 col-lg-5">
           <div>
             <img
-              src={singleProduct.imageUrl}
+              src={mainImage}
               alt="產品照片"
               className="img-productDetail mt-4 w-100"
             />
+            {singleProduct?.imageUrl?.length > 1 && (
+              <div className="d-flex gap-2 mt-3">
+                {singleProduct?.imageUrl?.map((img, index) => (
+                  <img
+                    key={index}
+                    src={img}
+                    alt={`縮圖${index + 1}`}
+                    className={`border img-productDetail-thumbnail ${
+                      img === mainImage
+                        ? "border-secondary border-4 shadow"
+                        : "border-light border-1"
+                    }`}
+                    style={{
+                      width: "80px",
+                      height: "80px",
+                      objectFit: "cover",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => setMainImage(img)}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
         <div className="col-md-6 col-lg-5">
@@ -109,7 +137,7 @@ export default function ProductDetail() {
           <h5 className="fw-bold">
             NT${singleProduct?.price?.toLocaleString()}
           </h5>
-          <div className="input-group mb-3 border mt-3">
+          <div className="input-group mb-3 border mt-4">
             <div className="input-group-prepend">
               <button
                 className="btn btn-outline-dark rounded-0 border-0 py-3"
@@ -143,7 +171,7 @@ export default function ProductDetail() {
           </div>
           <button
             type="button"
-            className="btn btn-dark btn-block rounded-0 py-3 w-100"
+            className="btn btn-dark btn-block rounded-0 mt-2 py-3 w-100"
             onClick={() => {
               addToCart(singleProduct?.id);
             }}
@@ -180,7 +208,9 @@ export default function ProductDetail() {
                 <i className="bi bi-asterisk me-2"></i>
                 <span>
                   保存期限 :
-                  {singleProduct.category === "saltPies"
+                  {singleProduct?.title?.includes("牛肉派") ||
+                  singleProduct?.title?.includes("法式鹹派") ||
+                  singleProduct?.title?.includes("康瓦爾派")
                     ? " 冷藏保存 5 日 , 冷凍保存 2 週"
                     : " 冷藏保存 2 日 , 冷凍保存 1 週"}
                 </span>
@@ -228,7 +258,7 @@ export default function ProductDetail() {
                     <div className="card-img-wrapper position-relative overflow-hidden">
                       <Link to={`/product/${product?.id}`}>
                         <img
-                          src={product?.imageUrl}
+                          src={product?.imageUrl[0]}
                           className="card-img-top rounded-0 img-fixed-height"
                           alt={product?.title}
                         />

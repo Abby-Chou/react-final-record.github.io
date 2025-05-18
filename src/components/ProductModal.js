@@ -17,7 +17,7 @@ export default function ProductModal({
     allergin: "",
     content: "",
     is_enabled: 0,
-    imageUrl: "",
+    imageUrl: [],
   });
 
   useEffect(() => {
@@ -32,10 +32,15 @@ export default function ProductModal({
         allergin: "",
         content: "",
         is_enabled: 0,
-        imageUrl: "",
+        imageUrl: [],
       });
     } else if (type === "edit") {
-      setTempData(tempProduct);
+      setTempData({
+        ...tempProduct,
+        imageUrl: Array.isArray(tempProduct.imageUrl)
+          ? tempProduct.imageUrl
+          : [tempProduct.imageUrl], // 如果不是陣列，就轉成陣列
+      });
     }
   }, [type, tempProduct]);
 
@@ -58,22 +63,38 @@ export default function ProductModal({
     }
   };
 
-  const uploadFile = async (file) => {
-    if (!file) {
+  const uploadFile = async (files) => {
+    if (!files.length) {
       return;
     }
-    const formData = new FormData();
-    formData.append("file-to-upload", file);
+    const uploadPromises = Array.from(files).map(async (file) => {
+      const formData = new FormData();
+      formData.append("file-to-upload", file);
 
-    const res = await axios.post(
-      `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/upload`,
-      formData
-    );
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/upload`,
+        formData
+      );
 
-    const { imageUrl } = res.data;
+      return res.data.imageUrl;
+    });
 
-    setTempData({ ...tempData, imageUrl: imageUrl });
+    const imageUrls = await Promise.all(uploadPromises);
+
+    // 把新的圖片加到原本的 imageUrl 陣列裡
+    setTempData((prevData) => ({
+      ...prevData,
+      imageUrl: [...prevData.imageUrl, ...imageUrls],
+    }));
   };
+
+  const removeImage = (indexToRemove) => {
+    setTempData((prevData) => ({
+      ...prevData,
+      imageUrl: prevData.imageUrl.filter((_, index) => index !== indexToRemove),
+    }));
+  };
+
   return (
     <>
       <div
@@ -122,19 +143,66 @@ export default function ProductModal({
                         id="customFile"
                         className="form-control"
                         name="imageUrl"
+                        multiple
                         onChange={(e) => {
-                          uploadFile(e.target.files[0]);
+                          uploadFile(e.target.files);
+                          e.target.value = "";
                         }}
                         value=""
                       />
                     </label>
                   </div>
 
-                  <img
-                    src={tempData.imageUrl || null}
-                    alt=""
-                    className="img-fluid"
-                  />
+                  <div className="d-flex flex-wrap gap-2 mt-3 justify-content-center">
+                    {tempData.imageUrl.map((url, index) => (
+                      <div
+                        key={index}
+                        style={{
+                          position: "relative",
+                          width: "100px",
+                          height: "100px",
+                          overflow: "hidden",
+                          borderRadius: "8px",
+                          border: "1px solid #ddd",
+                        }}
+                      >
+                        <img
+                          src={url}
+                          alt=""
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover", // 讓圖片不變形，填滿區塊
+                          }}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeImage(index)}
+                          style={{
+                            position: "absolute",
+                            top: "5px",
+                            right: "5px",
+                            background: "rgba(0,0,0,0.6)",
+                            color: "white",
+                            border: "none",
+                            borderRadius: "50%",
+                            width: "20px",
+                            height: "20px",
+                            lineHeight: "20px",
+                            textAlign: "center",
+                            cursor: "pointer",
+                            padding: 0,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontSize: "14px",
+                          }}
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
                 <div className="col-sm-8">
                   <div className="form-group mb-2">

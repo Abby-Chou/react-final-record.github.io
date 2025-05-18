@@ -25,9 +25,24 @@ export default function AdminOrders() {
   const orderModal = useRef(null);
   const deleteOrderModal = useRef(null);
 
-  const thisDate = `${new Date().getFullYear().toString()}年${(
-    new Date().getMonth() + 1
-  ).toString()}月`;
+  const [selectedMonth, setSelectedMonth] = useState(() => {
+    const now = new Date();
+    return `${now.getFullYear()}-${(now.getMonth() + 1)
+      .toString()
+      .padStart(2, "0")}`;
+  });
+
+  const months = Array.from({ length: 6 }, (_, i) => {
+    const now = new Date(); // 這就是你的 baseMonth 固定值
+    const baseYear = now.getFullYear();
+    const baseMonth = now.getMonth(); // 這邊是 0-11，不要加1
+
+    const date = new Date(baseYear, baseMonth - 3 + i, 1); // 直接用 new Date(年, 月, 日)
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+
+    return `${year}-${month}`;
+  });
 
   const getOrders = async (page = 1) => {
     setIsLoading(true);
@@ -40,14 +55,18 @@ export default function AdminOrders() {
     setIsLoading(false);
   };
 
-  const sortedOrders = [...orders].sort((a, b) => {
+  const filteredOrders = orders.filter((order) => {
+    const wishDate = order.user?.wishDate || "";
+    return wishDate.startsWith(selectedMonth);
+  });
+
+  const sortedFilteredOrders = [...filteredOrders].sort((a, b) => {
     const dateA = a.user?.wishDate || "";
     const dateB = b.user?.wishDate || "";
     return sortOrder === "asc"
       ? dateA.localeCompare(dateB)
       : dateB.localeCompare(dateA);
   });
-
   const openOrderModal = (openOrder) => {
     setTempOrder(openOrder);
     setTimeout(() => {
@@ -126,7 +145,31 @@ export default function AdminOrders() {
           handleDelete={deleteOrder}
           id={tempOrder.id}
         />
-        <h3>{thisDate}訂單列表</h3>
+
+        <div className="dropdown d-inline ms-3">
+          <button
+            className="btn btn-pink dropdown-toggle fs-s-20"
+            type="button"
+            id="monthFilter"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            {selectedMonth} 月份訂單列表
+          </button>
+          <ul className="dropdown-menu" aria-labelledby="monthFilter">
+            {months.map((monthStr) => (
+              <li key={monthStr}>
+                <button
+                  className="dropdown-item"
+                  onClick={() => setSelectedMonth(monthStr)}
+                >
+                  {monthStr} 月
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+
         <hr />
 
         <table className="table">
@@ -178,64 +221,76 @@ export default function AdminOrders() {
             </tr>
           </thead>
           <tbody>
-            {sortedOrders.map((order) => {
-              return (
-                <tr key={order.id}>
-                  <td style={{ width: "250px" }}>
-                    <button
-                      onClick={() => {
-                        navigator.clipboard.writeText(order.id);
-                        setCopied(true);
-                        setTimeout(() => setCopied(false), 2000);
-                      }}
-                      className="btn btn-link p-0 me-1 mt-n2 text-decoration-none"
-                      title="複製訂單編號"
+            {sortedFilteredOrders.length > 0 ? (
+              sortedFilteredOrders.map((order) => {
+                return (
+                  <tr key={order.id}>
+                    <td style={{ width: "250px" }}>
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(order.id);
+                          setCopied(true);
+                          setTimeout(() => setCopied(false), 2000);
+                        }}
+                        className="btn btn-link p-0 me-1 mt-n2 text-decoration-none"
+                        title="複製訂單編號"
+                      >
+                        <i className="bi bi-copy text-pink"></i>
+                      </button>
+                      {order.id}{" "}
+                    </td>
+                    <td style={{ width: "175px" }}>
+                      {Object.values(order?.products).map((item) => {
+                        return (
+                          <ul key={item.id} className="list-unstyled">
+                            <li>{item.product.title}</li>
+                          </ul>
+                        );
+                      })}
+                    </td>
+                    <td>
+                      {Object.values(order?.products).map((item) => {
+                        return (
+                          <ul key={item.id} className="list-unstyled">
+                            <li>x{item.qty}</li>
+                          </ul>
+                        );
+                      })}
+                    </td>
+                    <td
+                      className={`${
+                        order?.message === "未發貨" ? "text-red" : ""
+                      } ${order?.message === "已完成" ? "text-success" : ""}`}
                     >
-                      <i className="bi bi-copy text-pink"></i>
-                    </button>
-                    {order.id}{" "}
-                  </td>
-                  <td style={{ width: "175px" }}>
-                    {Object.values(order?.products).map((item) => {
-                      return (
-                        <ul key={item.id} className="list-unstyled">
-                          <li>{item.product.title}</li>
-                        </ul>
-                      );
-                    })}
-                  </td>
-                  <td>
-                    {Object.values(order?.products).map((item) => {
-                      return (
-                        <ul key={item.id} className="list-unstyled">
-                          <li>x{item.qty}</li>
-                        </ul>
-                      );
-                    })}
-                  </td>
-                  <td className={order?.message === "未發貨" ? "text-red" : ""}>
-                    {order.message}
-                  </td>
-                  <td>{order.user.wishDate}</td>
-                  <td>
-                    <button
-                      type="button"
-                      className="btn btn-secondary btn-sm"
-                      onClick={() => openOrderModal(order)}
-                    >
-                      編輯
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-outline-red fw-bold btn-sm ms-2"
-                      onClick={() => openDeleteModal(order)}
-                    >
-                      刪除
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
+                      {order.message}
+                    </td>
+                    <td>{order.user.wishDate}</td>
+                    <td>
+                      <button
+                        type="button"
+                        className="btn btn-pink btn-sm"
+                        onClick={() => openOrderModal(order)}
+                      >
+                        編輯
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-outline-red fw-bold btn-sm ms-2"
+                        onClick={() => openDeleteModal(order)}
+                      >
+                        刪除
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })
+            ) : (
+              <tr>
+                <td colSpan="6" className="text-center text-secondary">
+                  {selectedMonth} 月無訂單
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
 

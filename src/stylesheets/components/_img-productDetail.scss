@@ -2,3 +2,8 @@
   height: 350px;
   object-fit: cover;
 }
+
+.img-productDetail-thumbnail:hover {
+  transform: scale(1.05);
+  transition: 0.3s;
+}

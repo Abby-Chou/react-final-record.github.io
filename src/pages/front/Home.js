@@ -9,6 +9,7 @@ import pie from "../../assets/apple-pie.png";
 import cake from "../../assets/cake.png";
 import doughnut from "../../assets/doughnut.png";
 import dessert from "../../assets/dessert.png";
+import subscribe from "../../assets/subscribe.png";
 import "swiper/css";
 import "swiper/css/autoplay";
 import "swiper/css/effect-fade";
@@ -18,7 +19,7 @@ const comments = [
   {
     avatar:
       "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=1443&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    text: "喜歡義式提拉米蘇的人一定要試試看！酒味不會太濃也不會太淡，吃起來非常剛好～",
+    text: "奶香非常濃郁，但一點也不膩口，蛋糕體濕潤柔軟、帶有淡淡咖啡香，和上層微苦的可可粉搭配得剛剛好 ~",
     title: "提拉米蘇",
   },
   {
@@ -49,7 +50,6 @@ const comments = [
 
 export default function Home() {
   const { products, addToCart } = useOutletContext();
-  console.log(products);
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -103,7 +103,7 @@ export default function Home() {
               to="/products/allProducts"
               className="btn btn-pink px-4 py-2 mt-44 rounded-0 fs-5"
             >
-              開始購物
+              點我看甜點
             </Link>
           </div>
         </div>
@@ -261,8 +261,8 @@ export default function Home() {
         </div>
         <div className="mb-lg-4 bg-white p-4 pb-0 d-flex justify-content-center">
           <div className="row bg-white justify-content-center p-4 pb-0 gy-2">
+            {/* customer's comments */}
             <div className="col-12 col-lg-4 d-flex align-items-center">
-              {/* customer's comments */}
               <Swiper
                 direction="vertical"
                 loop={true}
@@ -292,7 +292,7 @@ export default function Home() {
                 ))}
               </Swiper>
             </div>
-
+            {/* hot products */}
             <div className="col-lg-8">
               <div className="row">
                 <Swiper
@@ -353,6 +353,59 @@ export default function Home() {
                   })}
                 </Swiper>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* subscribe */}
+
+      <div className="container mb-4">
+        <hr />
+        <div
+          style={{
+            backgroundImage: `url(${subscribe})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            padding: "80px 20px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: "white",
+              padding: "30px",
+              borderRadius: "12px",
+              maxWidth: "500px",
+              width: "100%",
+              boxShadow: "0 10px 20px rgba(0,0,0,0.2)",
+              textAlign: "center",
+            }}
+          >
+            <h3 style={{ marginBottom: "10px", color: "#333" }}>
+              想及時掌握最新優惠嗎？
+            </h3>
+            <p style={{ marginBottom: "20px", color: "#666" }}>
+              訂閱我們的電子報吧！
+            </p>
+            <div className="input-group">
+              <input
+                type="email"
+                placeholder="請輸入 Email ..."
+                className="form-control"
+              />
+              <button
+                type="button"
+                className="btn text-white"
+                style={{
+                  backgroundColor: "#F1916D",
+                  padding: "10px 20px",
+                }}
+              >
+                訂閱
+              </button>
             </div>
           </div>
         </div>
