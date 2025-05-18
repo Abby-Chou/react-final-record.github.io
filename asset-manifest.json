@@ -1,8 +1,9 @@
 {
   "files": {
-    "main.css": "/react-final-record.github.io/static/css/main.7fadf5cb.css",
-    "main.js": "/react-final-record.github.io/static/js/main.93b1ac19.js",
+    "main.css": "/react-final-record.github.io/static/css/main.9da08592.css",
+    "main.js": "/react-final-record.github.io/static/js/main.49491260.js",
     "static/js/453.68d63b2b.chunk.js": "/react-final-record.github.io/static/js/453.68d63b2b.chunk.js",
+    "static/media/subscribe.png": "/react-final-record.github.io/static/media/subscribe.e92e12c3447f8a5a0a1c.png",
     "static/media/bootstrap-icons.woff?": "/react-final-record.github.io/static/media/bootstrap-icons.39795c0b4513de014cf8.woff",
     "static/media/bootstrap-icons.woff2?": "/react-final-record.github.io/static/media/bootstrap-icons.b7bcc075b395c14ce8c2.woff2",
     "static/media/doughnut.png": "/react-final-record.github.io/static/media/doughnut.f827fdc6ee7357c5df26.png",
@@ -10,12 +11,12 @@
     "static/media/cake.png": "/react-final-record.github.io/static/media/cake.569022412a038bfe18c8.png",
     "static/media/apple-pie.png": "/react-final-record.github.io/static/media/apple-pie.942b242138cde638c7c9.png",
     "index.html": "/react-final-record.github.io/index.html",
-    "main.7fadf5cb.css.map": "/react-final-record.github.io/static/css/main.7fadf5cb.css.map",
-    "main.93b1ac19.js.map": "/react-final-record.github.io/static/js/main.93b1ac19.js.map",
+    "main.9da08592.css.map": "/react-final-record.github.io/static/css/main.9da08592.css.map",
+    "main.49491260.js.map": "/react-final-record.github.io/static/js/main.49491260.js.map",
     "453.68d63b2b.chunk.js.map": "/react-final-record.github.io/static/js/453.68d63b2b.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.7fadf5cb.css",
-    "static/js/main.93b1ac19.js"
+    "static/css/main.9da08592.css",
+    "static/js/main.49491260.js"
   ]
 }
