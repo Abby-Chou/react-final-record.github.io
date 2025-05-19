@@ -101,7 +101,7 @@ export default function Cart() {
             {cartData?.carts?.map((item) => (
               <div className="d-flex mt-2 bg-light" key={item.id}>
                 <img
-                  src={item.product.imageUrl}
+                  src={item.product.imageUrl[0]}
                   alt=""
                   style={{
                     width: "120px",

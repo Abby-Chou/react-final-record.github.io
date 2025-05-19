@@ -92,7 +92,7 @@ export default function OrderSuccess() {
               </p>
               <Link
                 to="/products/allProducts"
-                className="btn btn-pink me-2 rounded-0 mb-4 fs-5 p-2"
+                className="btn btn-pink me-2 rounded-0 mb-4 fs-5 py-2 px-3"
               >
                 繼續逛逛
               </Link>
@@ -109,7 +109,7 @@ export default function OrderSuccess() {
                       <li className="list-group-item px-0" key={item.id}>
                         <div className="d-flex mt-2">
                           <img
-                            src={item.product.imageUrl}
+                            src={item.product.imageUrl[0]}
                             alt=""
                             className="me-2"
                             style={{

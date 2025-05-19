@@ -65,7 +65,7 @@ export default function ProductDetail() {
       <nav
         style={{ "--bs-breadcrumb-divider": "'>'" }}
         aria-label="breadcrumb"
-        className="p-3 ms-6 pb-0"
+        className="p-3 ms-5 ms-lg-6 pb-0"
       >
         <ol className="breadcrumb">
           <li className="breadcrumb-item">
@@ -91,7 +91,7 @@ export default function ProductDetail() {
           </li>
         </ol>
       </nav>
-      <div className="row justify-content-center mt-lg-4 mb-lg-7 mb-2 px-5 gx-5 gy-3">
+      <div className="row justify-content-center mt-lg-4 mb-lg-7 mb-2 px-4 px-lg-5 gx-5 gy-3">
         <div className="col-md-6 col-lg-5">
           <div>
             <img
@@ -179,7 +179,7 @@ export default function ProductDetail() {
             加入購物車
           </button>
         </div>
-        <div className="col-md-12 col-lg-10 mt-5">
+        <div className="col-md-12 col-lg-10 mt-4 mt-lg-5">
           <div className="mt-3 text-secondary">
             <h3
               style={{

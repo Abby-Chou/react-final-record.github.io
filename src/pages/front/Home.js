@@ -318,7 +318,7 @@ export default function Home() {
                             <div className="card-img-wrapper position-relative overflow-hidden">
                               <Link to={`/product/${product.id}`}>
                                 <img
-                                  src={product.imageUrl}
+                                  src={product.imageUrl[0]}
                                   className="card-img-top rounded-0 img-fixed-height"
                                   alt={product.title}
                                 />

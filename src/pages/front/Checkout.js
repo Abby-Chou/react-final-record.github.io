@@ -177,7 +177,7 @@ export default function Checkout() {
                 {cartData?.carts?.map((item) => (
                   <div className="d-flex mb-2" key={item.id}>
                     <img
-                      src={item.product.imageUrl}
+                      src={item.product.imageUrl[0]}
                       alt=""
                       className="me-2"
                       style={{
