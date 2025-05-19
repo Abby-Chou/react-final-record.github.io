@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/react-final-record.github.io/static/css/main.9da08592.css",
-    "main.js": "/react-final-record.github.io/static/js/main.6f3d09a2.js",
+    "main.css": "/react-final-record.github.io/static/css/main.0d25b6e9.css",
+    "main.js": "/react-final-record.github.io/static/js/main.d58350ca.js",
     "static/js/453.68d63b2b.chunk.js": "/react-final-record.github.io/static/js/453.68d63b2b.chunk.js",
     "static/media/subscribe.png": "/react-final-record.github.io/static/media/subscribe.e92e12c3447f8a5a0a1c.png",
     "static/media/bootstrap-icons.woff?": "/react-final-record.github.io/static/media/bootstrap-icons.39795c0b4513de014cf8.woff",
@@ -11,12 +11,12 @@
     "static/media/cake.png": "/react-final-record.github.io/static/media/cake.569022412a038bfe18c8.png",
     "static/media/apple-pie.png": "/react-final-record.github.io/static/media/apple-pie.942b242138cde638c7c9.png",
     "index.html": "/react-final-record.github.io/index.html",
-    "main.9da08592.css.map": "/react-final-record.github.io/static/css/main.9da08592.css.map",
-    "main.6f3d09a2.js.map": "/react-final-record.github.io/static/js/main.6f3d09a2.js.map",
+    "main.0d25b6e9.css.map": "/react-final-record.github.io/static/css/main.0d25b6e9.css.map",
+    "main.d58350ca.js.map": "/react-final-record.github.io/static/js/main.d58350ca.js.map",
     "453.68d63b2b.chunk.js.map": "/react-final-record.github.io/static/js/453.68d63b2b.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.9da08592.css",
-    "static/js/main.6f3d09a2.js"
+    "static/css/main.0d25b6e9.css",
+    "static/js/main.d58350ca.js"
   ]
 }
