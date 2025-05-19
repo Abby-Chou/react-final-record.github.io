@@ -84,7 +84,7 @@ export default function Cart() {
   };
 
   return (
-    <div className="container px-4">
+    <div className="container px-3 px-lg-4">
       <div className="row justify-content-center">
         <div
           className="col-md-6 bg-white py-2"
@@ -98,6 +98,7 @@ export default function Cart() {
           <div className="px-2">
             <h2 className="mb-4">購物車</h2>
 
+            {/* 產品明細 */}
             {cartData?.carts?.map((item) => (
               <div className="d-flex mt-2 bg-light" key={item.id}>
                 <img
@@ -148,6 +149,7 @@ export default function Cart() {
               </div>
             ))}
 
+            {/* 若沒有點餐, 需要顯示的區塊 */}
             <div
               className={`text-center mb-4 ${
                 cartData?.carts?.length === 0 ? "d-block" : "d-none"
