@@ -3,9 +3,10 @@ import logo from "../assets/logo.png";
 import SearchBar from "./SearchBar";
 import { useState, useContext, useEffect } from "react";
 import { SearchContext } from "./SearchProvider";
+import { NavbarContext } from "./NavbarProvider";
 
 export default function Navbar({ cartData }) {
-  const [isOpen, setIsOpen] = useState(false);
+  const { isOpen, setIsOpen } = useContext(NavbarContext);
   const [showSearch, setShowSearch] = useState(false);
   const { search, setSearch, setAppliedSearch } = useContext(SearchContext);
   const navigate = useNavigate();

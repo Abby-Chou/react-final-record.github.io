@@ -4,6 +4,8 @@ import {
   useLocation,
   useNavigate,
 } from "react-router-dom";
+import { useContext } from "react";
+import { NavbarContext } from "../../components/NavbarProvider";
 import pie from "../../assets/apple-pie.png";
 import cake from "../../assets/cake.png";
 import doughnut from "../../assets/doughnut.png";
@@ -20,6 +22,7 @@ export default function Products() {
   const context = useOutletContext();
   const location = useLocation();
   const navigate = useNavigate();
+  const { isOpen } = useContext(NavbarContext);
 
   return (
     <>
@@ -57,8 +60,10 @@ export default function Products() {
           <div className="col-md-9">
             {/* 行動版 橫向 scroll list */}
             <div
-              className="d-md-none sticky-top bg-white border-top pt-2 mb-3"
-              style={{ top: "82px", zIndex: 1020 }}
+              className={`d-md-none sticky-top bg-white border-top pt-2 mb-3 ${
+                isOpen ? "top-s-242" : "top-s-82"
+              }`}
+              style={{ zIndex: 1020 }}
             >
               <div className="d-flex overflow-auto px-2 py-2 gap-3">
                 {categories.map((cat) => (

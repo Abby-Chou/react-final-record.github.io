@@ -111,6 +111,15 @@ $utilities: map-merge(
       property: top,
       values: $position-values,
     ),
+    "top-static": (
+      responsive: true,
+      property: top,
+      class: top-s,
+      values: (
+        82: 82px,
+        242: 242px,
+      ),
+    ),
     "bottom": (
       property: bottom,
       values: $position-values,
@@ -230,6 +239,7 @@ $utilities: map-merge(
       class: w-s,
       values: (
         150: 150px,
+        175: 175px,
         200: 200px,
         250: 250px,
         350: 350px,

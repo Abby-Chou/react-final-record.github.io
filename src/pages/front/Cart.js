@@ -199,9 +199,8 @@ export default function Cart() {
                         <input
                           type="text"
                           id="code"
-                          className="form-control"
+                          className="form-control w-s-175 w-s-lg-200"
                           style={{
-                            width: "200px",
                             flex: "0 0 auto",
                             marginRight: "12px",
                           }}
@@ -228,17 +227,15 @@ export default function Cart() {
                     }
                   >
                     <th className="border-0 px-0 pt-0 font-weight-normal">
-                      折抵後金額{" "}
-                      <span className="text-success text-nowrap">
-                        (已取得折扣)
-                      </span>
+                      <div>折抵後金額</div>
+                      <div className="text-success">(已取得折扣)</div>
                     </th>
                     <td className="text-end border-0 px-0 pt-0 text-success">
                       NT$ {cartData?.final_total?.toLocaleString()}
                     </td>
                   </tr>
                   <tr>
-                    <th className="border-0 px-0 pt-0 font-weight-normal">
+                    <th className="border-0 px-0 pt-0 font-weight-normal text-nowrap">
                       宅配運費
                     </th>
                     <td className="text-end border-0 px-0 pt-0">
