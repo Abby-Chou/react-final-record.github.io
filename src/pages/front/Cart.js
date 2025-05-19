@@ -227,8 +227,10 @@ export default function Cart() {
                     }
                   >
                     <th className="border-0 px-0 pt-0 font-weight-normal">
-                      <div>折抵後金額</div>
-                      <div className="text-success">(已取得折扣)</div>
+                      <div className="text-nowrap">折抵後金額</div>
+                      <div className="text-success text-nowrap fs-s-14">
+                        (已取得折扣)
+                      </div>
                     </th>
                     <td className="text-end border-0 px-0 pt-0 text-success">
                       NT$ {cartData?.final_total?.toLocaleString()}
