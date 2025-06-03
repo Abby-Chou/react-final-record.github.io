@@ -15,16 +15,14 @@ export default function AllKindsProducts() {
   // 判斷是否仍在 loading 狀態
   const isLoading = products.length === 0;
 
-  const filteredProducts = products.filter((product) =>
-    product.title.toLowerCase().includes(appliedSearch.toLowerCase())
-  );
-
   const {
     currentItems: currentProducts,
     currentPage,
     setCurrentPage,
     totalItems,
-  } = usePagination(filteredProducts, 6, [products]);
+  } = usePagination(products, appliedSearch, 6, (item, keyword) =>
+    item.title.toLowerCase().includes(keyword.toLowerCase())
+  );
 
   useEffect(() => {
     // 如果不是從搜尋按鈕來的 → 清空搜尋欄位
@@ -59,7 +57,7 @@ export default function AllKindsProducts() {
       ) : (
         <div className="fs-s-20 p-3 d-flex justify-content-center justify-content-lg-start ms-lg-3 mt-4 mt-lg-0">
           <div>
-            沒有符合『{" "}
+            沒有符合『
             <span className="text-pink fw-bold">{appliedSearch}</span> 』的產品
             , 請重新確認搜尋關鍵字
             <div className="mt-1">
@@ -79,7 +77,7 @@ export default function AllKindsProducts() {
         </div>
       )}
 
-      <div className="d-flex justify-content-center mt-3">
+      <div className="text-center w-100 mt-4">
         <Pagination
           totalItems={totalItems}
           itemsPerPage={6}

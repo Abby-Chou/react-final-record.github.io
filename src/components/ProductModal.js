@@ -168,7 +168,7 @@ export default function ProductModal({
                       >
                         <img
                           src={url}
-                          alt=""
+                          alt="產品照片"
                           style={{
                             width: "100%",
                             height: "100%",
@@ -357,7 +357,7 @@ export default function ProductModal({
               </button>
               <button
                 type="button"
-                className="btn btn-primary"
+                className="btn btn-pink"
                 onClick={() => {
                   onSubmit(tempData);
                 }}

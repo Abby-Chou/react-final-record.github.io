@@ -18,16 +18,15 @@ export default function AdminProducts() {
   const { setIsLoading } = useLoading();
   const [, dispatch] = useContext(MessageContext);
 
-  const filterProducts = !search
-    ? products
-    : products.filter((product) => product.category.match(search));
-
+  // 用 usePagination 取得篩選過、分頁的資料
   const {
     currentItems: currentProducts,
     currentPage,
     setCurrentPage,
     totalItems,
-  } = usePagination(filterProducts, 10, [products]);
+  } = usePagination(products, search, 10, (item, keyword) =>
+    item.category?.includes(keyword)
+  );
 
   // type: 決定 modal 展開的用途
   const [type, setType] = useState("create"); // edit

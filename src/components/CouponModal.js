@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
 
+const formatDate = (date) => {
+  return `${date.getFullYear().toString()}-${(date.getMonth() + 1)
+    .toString()
+    .padStart(2, 0)}-${date.getDate().toString().padStart(2, 0)}`;
+};
+
 export default function CouponModal({
   closeCouponModal,
   onSubmit,
   tempCoupon,
   type,
-  formatDate,
 }) {
   const [tempData, setTempData] = useState({
     title: "",
@@ -151,7 +156,7 @@ export default function CouponModal({
               </button>
               <button
                 type="button"
-                className="btn btn-primary"
+                className="btn btn-pink"
                 onClick={() => onSubmit(tempData, date)}
               >
                 儲存

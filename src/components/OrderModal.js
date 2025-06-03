@@ -144,7 +144,7 @@ export default function OrderModal({ closeOrderModal, onSubmit, tempOrder }) {
             </button>
             <button
               type="button"
-              className="btn btn-primary"
+              className="btn btn-pink"
               onClick={() => {
                 onSubmit(tempData);
               }}

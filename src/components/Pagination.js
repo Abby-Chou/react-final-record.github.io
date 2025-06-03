@@ -16,8 +16,12 @@ export default function Pagination({
 
   return (
     <nav>
-      <ul className="list-inline fs-5">
-        <li className={`list-inline-item ${currentPage === 1 ? "d-none" : ""}`}>
+      <ul className="list-inline fs-5 d-flex justify-content-center">
+        <li
+          className={`list-inline-item mt-n1 ${
+            currentPage === 1 ? "d-none" : ""
+          }`}
+        >
           <button
             className="btn btn-link p-0 border-0"
             onClick={() => changePage(currentPage - 1)}
@@ -28,7 +32,7 @@ export default function Pagination({
         {Array.from({ length: totalPages }, (_, i) => (
           <li
             key={i}
-            className={`list-inline-item align-middle ${
+            className={`list-inline-item ${
               currentPage === i + 1 ? "link-dark" : "link-secondary"
             } `}
           >
@@ -38,7 +42,7 @@ export default function Pagination({
           </li>
         ))}
         <li
-          className={`list-inline-item ${
+          className={`list-inline-item mt-n1 ${
             currentPage === totalPages ? "d-none" : ""
           }`}
         >

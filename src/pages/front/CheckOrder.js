@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useLoading } from "../../components/LoadingContext";
+import bg from "../../assets/checkOrderBackground.avif";
 
 export default function CheckOrder() {
   const [inputId, setInputId] = useState("");
@@ -34,8 +35,7 @@ export default function CheckOrder() {
       <div
         className="min-vh-100"
         style={{
-          backgroundImage:
-            "url(https://images.unsplash.com/photo-1561160726-832f3b8fc718?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)",
+          backgroundImage: `url(${bg})`,
           objectFit: "cover",
           backgroundPosition: "center",
           backgroundAttachment: "fixed",

@@ -6,14 +6,18 @@ import usePagination from "../../components/usePagination";
 export default function Cakes() {
   const { products, getCart } = useOutletContext();
 
-  const cakeProducts = products.filter((item) => item.category === "cakes");
-
   const {
     currentItems: currentProducts,
     currentPage,
     setCurrentPage,
     totalItems,
-  } = usePagination(cakeProducts, 6, [products]);
+  } = usePagination(
+    products,
+    "cakes",
+    6,
+    (item, keyword) => item.category === keyword
+  );
+
   return (
     <>
       {currentProducts.map((product) => {
@@ -21,7 +25,7 @@ export default function Cakes() {
           <ProductCard product={product} key={product.id} getCart={getCart} />
         );
       })}
-      <div className="d-flex justify-content-center mt-3">
+      <div className="text-center w-100 mt-4">
         <Pagination
           totalItems={totalItems}
           itemsPerPage={6}

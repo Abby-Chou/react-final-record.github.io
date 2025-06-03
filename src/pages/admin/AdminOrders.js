@@ -3,7 +3,8 @@ import axios from "axios";
 import OrderModal from "../../components/OrderModal";
 import { Modal } from "bootstrap";
 import DeleteOrderModal from "../../components/DeleteOrderModal";
-import AdminPagination from "../../components/AdminPagination";
+import usePagination from "../../components/usePagination";
+import Pagination from "../../components/Pagination";
 import { useLoading } from "../../components/LoadingContext";
 import {
   MessageContext,
@@ -11,9 +12,21 @@ import {
   handleFailMessage,
 } from "../../store/messageStore";
 
+const months = Array.from({ length: 6 }, (_, i) => {
+  const now = new Date(); // 這就是你的 baseMonth 固定值
+  const baseYear = now.getFullYear();
+  const baseMonth = now.getMonth(); // 這邊是 0-11，不要加1
+
+  const date = new Date(baseYear, baseMonth - 3 + i, 1); // 直接用 new Date(年, 月, 日)
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+
+  return `${year}-${month}`;
+});
+
 export default function AdminOrders() {
   const [orders, setOrders] = useState([]);
-  const [pagination, setPagination] = useState({});
+  const [displayOrders, setDisplayOrders] = useState([]);
   const { setIsLoading } = useLoading();
 
   const [tempOrder, setTempOrder] = useState({});
@@ -32,41 +45,35 @@ export default function AdminOrders() {
       .padStart(2, "0")}`;
   });
 
-  const months = Array.from({ length: 6 }, (_, i) => {
-    const now = new Date(); // 這就是你的 baseMonth 固定值
-    const baseYear = now.getFullYear();
-    const baseMonth = now.getMonth(); // 這邊是 0-11，不要加1
-
-    const date = new Date(baseYear, baseMonth - 3 + i, 1); // 直接用 new Date(年, 月, 日)
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-
-    return `${year}-${month}`;
-  });
-
-  const getOrders = async (page = 1) => {
+  // 因後端 API 沒有支援 get 全部 orders 資料取得功能, 暫用 for 迴圈取得每個 page 的資料
+  const getOrders = async () => {
+    const allOrders = [];
+    let page = 1;
+    let isLastPage = false;
     setIsLoading(true);
-    const productRes = await axios.get(
-      `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/orders?page=${page}`
-    );
+    while (!isLastPage) {
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/admin/orders?page=${page}`
+      );
 
-    setOrders(productRes?.data?.orders);
-    setPagination(productRes?.data?.pagination);
+      allOrders.push(...res.data.orders);
+
+      if (res.data.pagination.has_next) {
+        page++;
+      } else {
+        isLastPage = true;
+      }
+    }
+    setOrders(allOrders); // 儲存全部訂單到狀態中
     setIsLoading(false);
   };
 
-  const filteredOrders = orders.filter((order) => {
-    const wishDate = order.user?.wishDate || "";
-    return wishDate.startsWith(selectedMonth);
-  });
-
-  const sortedFilteredOrders = [...filteredOrders].sort((a, b) => {
-    const dateA = a.user?.wishDate || "";
-    const dateB = b.user?.wishDate || "";
-    return sortOrder === "asc"
-      ? dateA.localeCompare(dateB)
-      : dateB.localeCompare(dateA);
-  });
+  const {
+    currentItems: paginatedOrders,
+    currentPage,
+    setCurrentPage,
+    totalItems,
+  } = usePagination(displayOrders, "", 5);
   const openOrderModal = (openOrder) => {
     setTempOrder(openOrder);
     setTimeout(() => {
@@ -130,6 +137,23 @@ export default function AdminOrders() {
 
     getOrders();
   }, []);
+
+  // 讓排序完的資料不要因為換頁時被誤認為新資料而一直停留在 page = 1
+  useEffect(() => {
+    const filteredOrders = orders.filter((order) =>
+      (order.user?.wishDate || "").startsWith(selectedMonth)
+    );
+
+    const sortedfilteredOrders = [...filteredOrders].sort((a, b) => {
+      const dateA = a.user?.wishDate || "";
+      const dateB = b.user?.wishDate || "";
+      return sortOrder === "asc"
+        ? dateA.localeCompare(dateB)
+        : dateB.localeCompare(dateA);
+    });
+
+    setDisplayOrders(sortedfilteredOrders);
+  }, [orders, selectedMonth, sortOrder]);
   return (
     <>
       <div className="p-3">
@@ -221,8 +245,8 @@ export default function AdminOrders() {
             </tr>
           </thead>
           <tbody>
-            {sortedFilteredOrders.length > 0 ? (
-              sortedFilteredOrders.map((order) => {
+            {paginatedOrders.length > 0 ? (
+              paginatedOrders.map((order) => {
                 return (
                   <tr key={order.id}>
                     <td style={{ width: "250px" }}>
@@ -293,8 +317,14 @@ export default function AdminOrders() {
             )}
           </tbody>
         </table>
-
-        <AdminPagination pagination={pagination} changePage={getOrders} />
+        <div className="text-center w-100 mt-4">
+          <Pagination
+            totalItems={totalItems}
+            itemsPerPage={5}
+            currentPage={currentPage}
+            changePage={setCurrentPage}
+          />
+        </div>
       </div>
     </>
   );

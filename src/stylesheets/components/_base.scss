@@ -1,5 +1,9 @@
 body {
   overflow-x: hidden;
+  font-family: "Noto Sans TC", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
 }
 
 body.modal-open {

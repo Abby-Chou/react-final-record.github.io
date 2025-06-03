@@ -178,7 +178,7 @@ export default function Checkout() {
                   <div className="d-flex mb-2" key={item.id}>
                     <img
                       src={item.product.imageUrl[0]}
-                      alt=""
+                      alt="產品照片"
                       className="me-2"
                       style={{
                         width: "48px",

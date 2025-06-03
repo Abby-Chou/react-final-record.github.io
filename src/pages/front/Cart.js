@@ -103,7 +103,7 @@ export default function Cart() {
               <div className="d-flex mt-2 bg-light" key={item.id}>
                 <img
                   src={item.product.imageUrl[0]}
-                  alt=""
+                  alt="產品照片"
                   style={{
                     width: "120px",
                     height: "120px",

@@ -1,3 +1,5 @@
+import bg from "../../assets/problemBackground.avif";
+
 export default function Problems() {
   return (
     <>
@@ -5,8 +7,7 @@ export default function Problems() {
         <div
           className="p-5 mb-5"
           style={{
-            backgroundImage:
-              "url(https://images.unsplash.com/photo-1573050329989-9c2509328687?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)",
+            backgroundImage: `url(${bg})`,
             height: "240px",
             backgroundPosition: "center",
             backgroundSize: "cover",
@@ -74,7 +75,7 @@ export default function Problems() {
                       <ul className="list-unstyled lh-lg">
                         <li>
                           <i className="bi bi-1-circle me-2"></i>
-                          <span>選擇想要訂購的商品, 點選加入購物車</span>{" "}
+                          <span>選擇想要訂購的商品, 點選加入購物車</span>
                         </li>
                         <li className="d-flex align-items-start">
                           <i className="bi bi-2-circle me-2"></i>
@@ -150,7 +151,7 @@ export default function Problems() {
                         <div className="col-md-4">
                           <img
                             src="https://www.t-cat.com.tw/images/logo.svg"
-                            alt=""
+                            alt="黑貓宅急便"
                             className="ms-auto me-2 w-100 h-100"
                           />
                         </div>

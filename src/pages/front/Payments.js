@@ -33,7 +33,7 @@ export default function Payments() {
     mode: "onTouched",
   });
 
-  const paySubmit = async (paymentData) => {
+  const paySubmit = async () => {
     try {
       if (!orderInfo) {
         alert("找不到配送資料，請回上一步重新填寫");

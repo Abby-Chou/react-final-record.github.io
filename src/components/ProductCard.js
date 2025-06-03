@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 
 export default function ProductCard({ product, addToCart }) {
-  console.log(product);
   return (
     <>
       <div className="col" key={product.id}>
@@ -11,7 +10,7 @@ export default function ProductCard({ product, addToCart }) {
               <img
                 src={product.imageUrl[0]}
                 className="card-img-top rounded-0 product-card-img"
-                alt="..."
+                alt="產品照片"
               />
               <div className="overlay d-flex justify-content-center align-items-center">
                 <span className="text-white fs-5">查看內容</span>

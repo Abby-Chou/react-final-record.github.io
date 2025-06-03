@@ -6,16 +6,17 @@ import usePagination from "../../components/usePagination";
 export default function Doughnuts() {
   const { products, getCart } = useOutletContext();
 
-  const doughnutsProducts = products.filter(
-    (item) => item.category === "doughnuts"
-  );
-
   const {
     currentItems: currentProducts,
     currentPage,
     setCurrentPage,
     totalItems,
-  } = usePagination(doughnutsProducts, 6, [products]);
+  } = usePagination(
+    products,
+    "doughnuts",
+    6,
+    (item, keyword) => item.category === keyword
+  );
 
   return (
     <>
@@ -25,7 +26,7 @@ export default function Doughnuts() {
         );
       })}
 
-      <div className="d-flex justify-content-center mt-3">
+      <div className="text-center w-100 mt-4">
         <Pagination
           totalItems={totalItems}
           itemsPerPage={6}

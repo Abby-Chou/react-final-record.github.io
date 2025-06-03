@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../../components/Navbar";
-import { useEffect, useState, useCallback, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { useLoading } from "../../components/LoadingContext";
 import { CouponContext } from "../../components/CouponProvider";
@@ -23,7 +23,7 @@ export default function FrontLayout() {
 
   const [cartData, setCartData] = useState({});
 
-  const getCart = useCallback(async () => {
+  const getCart = async () => {
     setIsLoading(true);
 
     const res = await axios.get(
@@ -34,18 +34,7 @@ export default function FrontLayout() {
     setShippingFee(100 * res.data.data.carts.length);
 
     setIsLoading(false);
-  }, [setIsLoading]);
-
-  const getProducts = useCallback(async () => {
-    setIsLoading(true);
-
-    const productRes = await axios.get(
-      `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/products/all`
-    );
-    setProducts(productRes.data.products);
-
-    setIsLoading(false);
-  }, [setIsLoading]);
+  };
 
   const addToCart = async (id) => {
     // 如果找到購物車已有相同品項的產品, 確認原數量加新數量不大於 10
@@ -88,9 +77,19 @@ export default function FrontLayout() {
   };
 
   useEffect(() => {
+    const getProducts = async () => {
+      setIsLoading(true);
+
+      const productRes = await axios.get(
+        `${process.env.REACT_APP_API_URL}/v2/api/${process.env.REACT_APP_API_PATH}/products/all`
+      );
+      setProducts(productRes.data.products);
+
+      setIsLoading(false);
+    };
     getCart();
     getProducts();
-  }, [getCart, getProducts]);
+  }, []);
   return (
     <>
       <Navbar cartData={cartData} />

@@ -4,12 +4,23 @@ import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import { Link, useOutletContext } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { Modal } from "bootstrap";
+import { useRef } from "react";
 
 import pie from "../../assets/apple-pie.png";
 import cake from "../../assets/cake.png";
 import doughnut from "../../assets/doughnut.png";
 import dessert from "../../assets/dessert.png";
 import subscribe from "../../assets/subscribe.png";
+import comment1 from "../../assets/comment1.avif";
+import comment2 from "../../assets/comment2.avif";
+import comment3 from "../../assets/comment3.avif";
+import comment4 from "../../assets/comment4.avif";
+import comment5 from "../../assets/comment5.avif";
+import header from "../../assets/headerBackground.avif";
+import intro1 from "../../assets/intro1.avif";
+import intro2 from "../../assets/intro2.avif";
 import "swiper/css";
 import "swiper/css/autoplay";
 import "swiper/css/effect-fade";
@@ -17,32 +28,27 @@ import "swiper/css/navigation";
 
 const comments = [
   {
-    avatar:
-      "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=1443&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    avatar: comment1,
     text: "奶香非常濃郁，但一點也不膩口，蛋糕體濕潤柔軟、帶有淡淡咖啡香，和上層微苦的可可粉搭配得剛剛好 ~",
     title: "提拉米蘇",
   },
   {
-    avatar:
-      "https://images.unsplash.com/photo-1519052537078-e6302a4968d4?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    avatar: comment2,
     text: "南瓜派真的很好吃！是經典的美式口味，感恩節必吃甜點。",
     title: "南瓜派",
   },
   {
-    avatar:
-      "https://images.unsplash.com/photo-1511275539165-cc46b1ee89bf?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fGNhdHxlbnwwfDB8MHx8fDA%3D",
+    avatar: comment3,
     text: "很常吃派派工房的甜派，某次吃了他家肉派就回不去了！已經變成家中必備冷凍食品。",
     title: "牛肉派",
   },
   {
-    avatar:
-      "https://images.unsplash.com/photo-1498100152307-ce63fd6c5424?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    avatar: comment4,
     text: "芋頭奶油派超療癒！綿密的口感和奶香太搭了～",
     title: "芋頭波士頓派",
   },
   {
-    avatar:
-      "https://images.unsplash.com/photo-1472491235688-bdc81a63246e?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    avatar: comment5,
     text: "最近愛上檸檬塔，酸甜平衡得很好，超推薦！",
     title: "檸檬塔",
   },
@@ -51,6 +57,21 @@ const comments = [
 export default function Home() {
   const { products, addToCart } = useOutletContext();
   const [copied, setCopied] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
+
+  const subscribeModalRef = useRef(null);
+
+  const onSubmit = (data) => {
+    reset(); // 清除表單
+    const modal = new Modal(subscribeModalRef.current);
+    modal.show();
+  };
 
   useEffect(() => {
     Aos.init({
@@ -66,8 +87,7 @@ export default function Home() {
         <div
           className="px-5 py-8 p-lg-8 text-white"
           style={{
-            backgroundImage:
-              "url(https://images.unsplash.com/photo-1670843635865-8e05b729e0fe?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)",
+            backgroundImage: `url(${header})`,
             backgroundPosition: "center",
             height: "420px",
           }}
@@ -82,7 +102,7 @@ export default function Home() {
             <h1 className="fs-2 mb-44">限時首購優惠</h1>
             <h2 className="fs-5 mb-2">全館 8 折 </h2>
             <h2 className="fs-5">
-              只要輸入折扣碼 P2025{" "}
+              只要輸入折扣碼 P2025
               <button
                 onClick={() => {
                   navigator.clipboard.writeText("P2025");
@@ -121,7 +141,7 @@ export default function Home() {
             >
               <img
                 src={dessert}
-                alt=""
+                alt="全部產品圖片"
                 style={{ height: "70px", width: "70px" }}
                 className="mb-2"
               />
@@ -132,7 +152,7 @@ export default function Home() {
             <Link className="mt-1 text-decoration-none category-img">
               <img
                 src={cake}
-                alt=""
+                alt="蛋糕分類圖片"
                 style={{ height: "65px", width: "65px" }}
                 className="mb-2"
               />
@@ -146,7 +166,7 @@ export default function Home() {
             >
               <img
                 src={pie}
-                alt=""
+                alt="特色派類圖片"
                 className="mb-2"
                 style={{ height: "80px", width: "80px" }}
               />
@@ -165,7 +185,7 @@ export default function Home() {
             >
               <img
                 src={doughnut}
-                alt=""
+                alt="甜甜圈類圖片"
                 style={{ height: "68px", width: "68px" }}
                 className="mt-2 mb-2"
               />
@@ -180,11 +200,7 @@ export default function Home() {
         {/* 介紹圖一 */}
         <div className="row justify-content-center mt-3 px-5 pt-3 pb-4 gy-4">
           <div className="col-md-5" data-aos="fade-right">
-            <img
-              className="w-100 h-auto"
-              src="https://plus.unsplash.com/premium_photo-1730150340972-3288f06e1403?q=80&w=1466&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt=""
-            />
+            <img className="w-100 h-auto" src={intro1} alt="介紹圖一" />
           </div>
           <div
             className="col-md-5 d-flex justify-content-center align-items-center"
@@ -199,28 +215,28 @@ export default function Home() {
               <p>復刻人們心中懷念的滋味</p>
               <img
                 src={pie}
-                alt=""
+                alt="派"
                 style={{ width: "25px", height: "25px" }}
                 className="me-1"
               />
               <img
                 src={pie}
-                alt=""
+                alt="派"
                 style={{ width: "25px", height: "25px" }}
                 className="me-1"
               />
-              <img src={pie} alt="" style={{ width: "25px", height: "25px" }} />
+              <img
+                src={pie}
+                alt="派"
+                style={{ width: "25px", height: "25px" }}
+              />
             </div>
           </div>
         </div>
         {/* 介紹圖二 */}
         <div className="row justify-content-center flex-md-row-reverse px-5 py-3 gy-4">
           <div className="col-md-5" data-aos="fade-left" data-aos-delay="300">
-            <img
-              className="w-100 h-auto"
-              src="https://images.unsplash.com/photo-1543876604-b8ac0e7ded00?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt=""
-            />
+            <img className="w-100 h-auto" src={intro2} alt="介紹圖二" />
           </div>
           <div
             className="col-md-5 d-flex justify-content-center align-items-center"
@@ -236,17 +252,21 @@ export default function Home() {
               <p>打造夢幻點心日記</p>
               <img
                 src={pie}
-                alt=""
+                alt="派"
                 style={{ width: "25px", height: "25px" }}
                 className="me-1"
               />
               <img
                 src={pie}
-                alt=""
+                alt="派"
                 style={{ width: "25px", height: "25px" }}
                 className="me-1"
               />
-              <img src={pie} alt="" style={{ width: "25px", height: "25px" }} />
+              <img
+                src={pie}
+                alt="派"
+                style={{ width: "25px", height: "25px" }}
+              />
             </div>
           </div>
         </div>
@@ -280,7 +300,7 @@ export default function Home() {
                     <div className="d-flex mb-1 justify-content-center">
                       <img
                         src={comment.avatar}
-                        alt=""
+                        alt="顧客大頭貼"
                         style={{ width: "70px", height: "70px" }}
                         className="me-2 mt-3 object-fit-cover rounded-circle"
                       />
@@ -390,22 +410,52 @@ export default function Home() {
             <p style={{ marginBottom: "20px", color: "#666" }}>
               訂閱我們的電子報吧！
             </p>
-            <div className="input-group">
-              <input
-                type="email"
-                placeholder="請輸入 Email ..."
-                className="form-control"
-              />
-              <button
-                type="button"
-                className="btn text-white"
-                style={{
-                  backgroundColor: "#F1916D",
-                  padding: "10px 20px",
-                }}
-              >
-                訂閱
-              </button>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="input-group">
+                <input
+                  type="text"
+                  placeholder="請輸入 Email ..."
+                  className={`form-control ${errors.email ? "is-invalid" : ""}`}
+                  {...register("email", {
+                    required: "Email 為必填欄位",
+                    pattern: {
+                      value: /^\S+@\S+$/i,
+                      message: "請輸入有效的 Email 格式",
+                    },
+                  })}
+                />
+                <button
+                  type="submit"
+                  className="btn text-white"
+                  style={{ backgroundColor: "#F1916D", padding: "10px 20px" }}
+                >
+                  訂閱
+                </button>
+              </div>
+              {errors.email && (
+                <div className="invalid-feedback d-block">
+                  {errors?.email?.message}
+                </div>
+              )}
+            </form>
+            <div className="modal fade" tabIndex="-1" ref={subscribeModalRef}>
+              <div className="modal-dialog modal-dialog-centered">
+                <div className="modal-content">
+                  <div className="modal-header position-relative">
+                    <h5 className="modal-title mx-auto">訂閱成功</h5>
+                    <button
+                      type="button"
+                      className="btn-close position-absolute end-0 me-3"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+
+                  <div className="modal-body">
+                    <p>您已成功訂閱電子報，感謝您的支持！</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

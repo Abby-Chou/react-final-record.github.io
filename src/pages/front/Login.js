@@ -49,7 +49,6 @@ export default function Login() {
                 </button>
               </div>
               <div className="col">
-                {" "}
                 <button
                   type="button"
                   className="btn btn-fb w-100 text-white d-flex align-items-center justify-content-center"

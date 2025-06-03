@@ -17,7 +17,7 @@ export default function ProductDetail() {
   const [mainImage, setMainImage] = useState("");
 
   const [categoryTitle, setCategoryTitle] = useState("");
-  const [theseProducts, setTheseProducts] = useState([]);
+  const [relatedProducts, setRelatedProducts] = useState([]);
   const { setIsLoading } = useLoading();
   const { id } = useParams();
   const { products, addToCart } = useOutletContext();
@@ -58,7 +58,7 @@ export default function ProductDetail() {
       .filter((item) => item.category === singleProduct.category)
       .filter((item) => item.title !== singleProduct.title);
 
-    setTheseProducts(relatedProducts);
+    setRelatedProducts(relatedProducts);
   }, [products, singleProduct]);
   return (
     <div className="container">
@@ -72,7 +72,7 @@ export default function ProductDetail() {
             <Link to="/">
               <img
                 src={home}
-                alt=""
+                alt="首頁"
                 style={{ height: "20px", width: "20px" }}
                 className="mt-n1"
               />
@@ -225,10 +225,10 @@ export default function ProductDetail() {
               注意事項
             </h3>
             <p className="p-2 fs-s-20">
-              請詳細閱讀完{" "}
+              請詳細閱讀完
               <Link className="link-pink text-decoration-none" to="/problems">
                 常見問題
-              </Link>{" "}
+              </Link>
               , 再行下單
             </p>
             <h3
@@ -242,7 +242,7 @@ export default function ProductDetail() {
             <Swiper
               slidesPerView={3}
               spaceBetween={10}
-              loop={theseProducts.length >= 6}
+              loop={relatedProducts.length >= 6}
               autoplay={{ delay: 5000 }}
               modules={[Autoplay]}
               breakpoints={{
@@ -252,7 +252,7 @@ export default function ProductDetail() {
               }}
               className="product-swiper pt-3 mt-lg-4 me"
             >
-              {theseProducts.map((product, index) => (
+              {relatedProducts.map((product, index) => (
                 <SwiperSlide key={index} className="px-lg-2">
                   <div className="card border-0 h-100 card-special-hover">
                     <div className="card-img-wrapper position-relative overflow-hidden">

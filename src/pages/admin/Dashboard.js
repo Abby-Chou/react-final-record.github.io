@@ -48,9 +48,9 @@ export default function Dashboard() {
   return (
     <MessageContext.Provider value={reducer}>
       <Message />
-      <nav className="navbar navbar-expand-lg bg-footer">
+      <nav className="navbar navbar-expand-lg bg-pink">
         <div className="container-fluid">
-          <p className="text-white mb-0">
+          <p className="text-dark fs-s-20 mb-0">
             <img
               src={logo}
               alt="logo"

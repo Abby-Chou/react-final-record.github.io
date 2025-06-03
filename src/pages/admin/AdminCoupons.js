@@ -6,6 +6,12 @@ import DeleteModal from "../../components/DeleteModal";
 import AdminPagination from "../../components/AdminPagination";
 import { useLoading } from "../../components/LoadingContext";
 
+const formatDate = (date) => {
+  return `${date.getFullYear().toString()}-${(date.getMonth() + 1)
+    .toString()
+    .padStart(2, 0)}-${date.getDate().toString().padStart(2, 0)}`;
+};
+
 export default function AdminCoupons() {
   const [coupons, setCoupons] = useState([]);
   const [pagination, setPagination] = useState({});
@@ -81,12 +87,6 @@ export default function AdminCoupons() {
     setIsLoading(false);
   };
 
-  const formatDate = (date) => {
-    return `${date.getFullYear().toString()}-${(date.getMonth() + 1)
-      .toString()
-      .padStart(2, 0)}-${date.getDate().toString().padStart(2, 0)}`;
-  };
-
   useEffect(() => {
     // 取出之前登入過的 Token
     couponModal.current = new Modal("#couponModal", {
@@ -105,7 +105,6 @@ export default function AdminCoupons() {
           closeCouponModal={closeCouponModal}
           tempCoupon={tempCoupon}
           type={type}
-          formatDate={formatDate}
           onSubmit={handleSubmit}
         />
         <DeleteModal
@@ -166,7 +165,9 @@ export default function AdminCoupons() {
             })}
           </tbody>
         </table>
-        <AdminPagination pagination={pagination} changePage={getCoupons} />
+        <div className="d-flex justify-content-center">
+          <AdminPagination pagination={pagination} changePage={getCoupons} />
+        </div>
       </div>
     </>
   );

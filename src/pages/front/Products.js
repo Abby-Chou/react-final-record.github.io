@@ -45,7 +45,7 @@ export default function Products() {
                     >
                       <img
                         src={cat.icon}
-                        alt=""
+                        alt="種類圖片"
                         style={{ height: "20px", width: "20px" }}
                         className="mt-1 me-2"
                       />
@@ -77,7 +77,7 @@ export default function Products() {
                   >
                     <img
                       src={cat.icon}
-                      alt=""
+                      alt="種類圖片"
                       style={{ height: "18px", width: "18px" }}
                       className="me-2"
                     />

@@ -5,14 +5,18 @@ import usePagination from "../../components/usePagination";
 
 export default function Pies() {
   const { products, getCart } = useOutletContext();
-  const pieProducts = products.filter((item) => item.category === "pies");
 
   const {
     currentItems: currentProducts,
     currentPage,
     setCurrentPage,
     totalItems,
-  } = usePagination(pieProducts, 6, [products]);
+  } = usePagination(
+    products,
+    "pies",
+    6,
+    (item, keyword) => item.category === keyword
+  );
   return (
     <>
       {currentProducts.map((product) => {
@@ -21,7 +25,7 @@ export default function Pies() {
         );
       })}
 
-      <div className="d-flex justify-content-center mt-3">
+      <div className="text-center w-100 mt-4">
         <Pagination
           totalItems={totalItems}
           itemsPerPage={6}
