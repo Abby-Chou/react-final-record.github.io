@@ -1,22 +1,33 @@
 {
   "files": {
-    "main.css": "/react-final-record.github.io/static/css/main.0d25b6e9.css",
-    "main.js": "/react-final-record.github.io/static/js/main.02304d43.js",
+    "main.css": "/react-final-record.github.io/static/css/main.3b0db40b.css",
+    "main.js": "/react-final-record.github.io/static/js/main.fb31498b.js",
     "static/js/453.68d63b2b.chunk.js": "/react-final-record.github.io/static/js/453.68d63b2b.chunk.js",
     "static/media/subscribe.png": "/react-final-record.github.io/static/media/subscribe.e92e12c3447f8a5a0a1c.png",
+    "static/media/intro1.avif": "/react-final-record.github.io/static/media/intro1.522383e1c37ff3180240.avif",
+    "static/media/orderSuccessBackground.avif": "/react-final-record.github.io/static/media/orderSuccessBackground.ebed394be00698e0098e.avif",
+    "static/media/headerBackground.avif": "/react-final-record.github.io/static/media/headerBackground.74e709336a3e9e656235.avif",
+    "static/media/problemBackground.avif": "/react-final-record.github.io/static/media/problemBackground.8ec2e4a18e3aa785b349.avif",
     "static/media/bootstrap-icons.woff?": "/react-final-record.github.io/static/media/bootstrap-icons.39795c0b4513de014cf8.woff",
+    "static/media/intro2.avif": "/react-final-record.github.io/static/media/intro2.646f41ec0c579ce518d8.avif",
     "static/media/bootstrap-icons.woff2?": "/react-final-record.github.io/static/media/bootstrap-icons.b7bcc075b395c14ce8c2.woff2",
+    "static/media/checkOrderBackground.avif": "/react-final-record.github.io/static/media/checkOrderBackground.ba881435ecae4aee0c04.avif",
+    "static/media/comment2.avif": "/react-final-record.github.io/static/media/comment2.2d72956683ba534016c7.avif",
+    "static/media/comment5.avif": "/react-final-record.github.io/static/media/comment5.78a7522a6bc593779a68.avif",
+    "static/media/comment4.avif": "/react-final-record.github.io/static/media/comment4.20f7ff4e5275106fef2d.avif",
+    "static/media/comment1.avif": "/react-final-record.github.io/static/media/comment1.0782445b913572478849.avif",
     "static/media/doughnut.png": "/react-final-record.github.io/static/media/doughnut.f827fdc6ee7357c5df26.png",
     "static/media/dessert.png": "/react-final-record.github.io/static/media/dessert.e7c056cd13510a5b8669.png",
     "static/media/cake.png": "/react-final-record.github.io/static/media/cake.569022412a038bfe18c8.png",
+    "static/media/comment3.avif": "/react-final-record.github.io/static/media/comment3.ff499051aa5425081f71.avif",
     "static/media/apple-pie.png": "/react-final-record.github.io/static/media/apple-pie.942b242138cde638c7c9.png",
     "index.html": "/react-final-record.github.io/index.html",
-    "main.0d25b6e9.css.map": "/react-final-record.github.io/static/css/main.0d25b6e9.css.map",
-    "main.02304d43.js.map": "/react-final-record.github.io/static/js/main.02304d43.js.map",
+    "main.3b0db40b.css.map": "/react-final-record.github.io/static/css/main.3b0db40b.css.map",
+    "main.fb31498b.js.map": "/react-final-record.github.io/static/js/main.fb31498b.js.map",
     "453.68d63b2b.chunk.js.map": "/react-final-record.github.io/static/js/453.68d63b2b.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.0d25b6e9.css",
-    "static/js/main.02304d43.js"
+    "static/css/main.3b0db40b.css",
+    "static/js/main.fb31498b.js"
   ]
 }
