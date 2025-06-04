@@ -15,6 +15,7 @@
 
 ## 後台管理員
 
+- 登入網址 : https://abby-chou.github.io/react-final-record.github.io/#/adminLogin
 - 登入驗證
 - 後台功能請登入管理員帳號 帳號：a0939074721@gmail.com 密碼：tmdd1234
 - 商品 CRUD 功能（含 Modal 編輯視窗）

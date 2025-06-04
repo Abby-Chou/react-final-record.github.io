@@ -11,6 +11,7 @@ export default function Navbar({ cartData }) {
   const { search, setSearch, setAppliedSearch } = useContext(SearchContext);
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const isProductsPage = pathname.startsWith("/products");
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
@@ -134,7 +135,11 @@ export default function Navbar({ cartData }) {
                 <span className="navbar-toggler-icon"></span>
               </button>
               {showSearch && (
-                <div className="search-box">
+                <div
+                  className={`search-box ${
+                    isProductsPage ? "mt-8 mt-md-0" : ""
+                  }`}
+                >
                   <SearchBar
                     search={search}
                     setSearch={setSearch}
