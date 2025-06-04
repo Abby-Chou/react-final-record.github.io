@@ -93,16 +93,18 @@ export default function FrontLayout() {
   return (
     <>
       <Navbar cartData={cartData} />
-      <Outlet
-        context={{
-          getCart,
-          stepItems,
-          products,
-          cartData,
-          shippingFee,
-          addToCart,
-        }}
-      />
+      <div className="min-vh-100">
+        <Outlet
+          context={{
+            getCart,
+            stepItems,
+            products,
+            cartData,
+            shippingFee,
+            addToCart,
+          }}
+        />
+      </div>
       <footer className="bg-footer">
         <div className="container">
           <div className="d-flex justify-content-center text-white py-4">

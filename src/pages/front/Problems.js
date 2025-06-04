@@ -3,7 +3,7 @@ import bg from "../../assets/problemBackground.avif";
 export default function Problems() {
   return (
     <>
-      <div className="min-vh-100 mb-5">
+      <div className="mb-5">
         <div
           className="p-5 mb-5"
           style={{

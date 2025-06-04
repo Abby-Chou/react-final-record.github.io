@@ -52,7 +52,7 @@ export default function OrderSuccess() {
   }
 
   return (
-    <div className="container">
+    <div className="container min-vh-100">
       <div
         style={{
           minHeight: "400px",
